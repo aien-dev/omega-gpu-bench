@@ -64,9 +64,17 @@ def t_neg_not_run_as_detected(r):
     n.update(checked=None, mismatches=None, first_bad=None, output_sha256=None, error="cuModuleLoadData: 200")
 
 
+def t_withdrawn_kernel(r):
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    sums = R.read_sums(os.path.join(root, "kernels", "WITHDRAWN.sha256"))
+    p = row(r, "PASS")
+    p["cubin_sha256"] = sums[p["cubin"]]
+
+
 CASES = {  # case: (tamper, which receipt, reason the validator must give)
     "noreseal": (t_noreseal, "kit", "receipt_sha256 does not match"),
     "cubin-hash": (t_cubin_hash, "kit", "differs from kernels/SHA256SUMS"),
+    "withdrawn-kernel": (t_withdrawn_kernel, "kit", "kernel withdrawn from this kit"),
     "pass-with-mismatches": (t_pass_with_mismatches, "kit", "contradicts 5 mismatches"),
     "forged-ref": (t_forged_ref, "kit", "recomputed"),
     "dropped-row": (t_dropped_row, "kit", "must run exactly"),

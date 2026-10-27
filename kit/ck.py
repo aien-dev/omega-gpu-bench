@@ -6,7 +6,8 @@
 #
 # The cubin is loaded with NVIDIA's driver library (libcuda, cuModuleLoadData) and launched with
 # cuLaunchKernel. This is an interop oracle for Omega's machine-code encoder (asm2 + sm80.tbl) and
-# cubin writer (kernels/src/cubin.om). It is NOT CUDA++'s own user-space driver path.
+# cubin writer (withdrawn pending a clean-room rewrite, README.md). It is NOT CUDA++'s own user-space
+# driver path.
 #
 # Inputs are public and deterministic: a[i], b[i] = Python random.Random(20261026).getrandbits(32),
 # n = 2^20 + 7, 128 threads per block. vecadd must give c[i] = (a[i] + b[i]) mod 2^32 for every i.

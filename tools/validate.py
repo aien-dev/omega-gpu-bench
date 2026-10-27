@@ -10,7 +10,9 @@
 #   * every reported reference value in first_bad is recomputed here from the public seed, and every
 #     reported GPU value differs from it; a clean run's output hash must equal the reference's hash;
 #   * GB/s is recomputed from the kernel time; the libcuda label and the sign-off are present;
-#   * imported CloudKernels runs are accepted only if their hash is on receipts/imports.sha256;
+#   * imported CloudKernels runs are accepted only if their hash is on receipts/imports.sha256, and their
+#     kernels are checked against kernels/WITHDRAWN.sha256 (the cubins they ran, since withdrawn);
+#   * a kit run of a withdrawn kernel is rejected, whatever kit commit it names;
 #   * receipts made with the test fixture driver are rejected (tests use --allow-fake).
 # INTERIM host glue (Python); Omega successor: an omc-built checker, see DEPENDENCIES.md.
 import argparse, hashlib, json, os, random, re, subprocess, sys
@@ -54,6 +56,9 @@ class Checker:
     def __init__(self, repo, sums_path, imports_path, allow_fake):
         self.repo, self.allow_fake = repo, allow_fake
         self.sums_text = open(sums_path).read()
+        withdrawn = os.path.join(os.path.dirname(sums_path), "WITHDRAWN.sha256")
+        self.withdrawn_text = open(withdrawn).read() if os.path.exists(withdrawn) else ""
+        self.withdrawn = set(R.parse_sums(self.withdrawn_text).values())
         self.imports = set()
         if os.path.exists(imports_path):
             self.imports = {l.split()[0] for l in open(imports_path) if l.strip() and not l.startswith("#")}
@@ -135,7 +140,7 @@ class Checker:
                     and ev["files"] and all(isinstance(f, dict) and HEX64.fullmatch(str(f.get("sha256")))
                                             for f in ev["files"])):
                 e("imported run needs evidence.source and evidence.files [{path, sha256}]")
-            sums_text = self.sums_text
+            sums_text = self.withdrawn_text
         sums = R.parse_sums(sums_text)
 
         rows = rec["results"]
@@ -154,6 +159,8 @@ class Checker:
         for r in rows:
             if isinstance(r, dict):
                 self.check_row(r, sums, origin, e)
+                if origin == "kit-run" and r.get("cubin_sha256") in self.withdrawn:
+                    e("%s: kernel withdrawn from this kit: %s" % (r.get("cubin"), R.WITHDRAWN))
         return errs
 
     def check_row(self, r, sums, origin, e):

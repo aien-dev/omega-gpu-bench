@@ -1,8 +1,8 @@
 #!/bin/sh
 # ./run -- run Omega-encoded GPU kernels on this machine's NVIDIA GPU and write a receipt.
 # Needs: Linux, an NVIDIA driver (libcuda.so.1), Python 3.8+, git. No CUDA toolkit, no compiler, no pip.
-# Options: ./run --help. Exit 0 all kernels correct; 1 a kernel failed; 2 no usable GPU (no receipt);
-# 3 kit kernels changed; 4 no sign-off.
+# Options: ./run --help. Exit 0 all kernels correct; 1 a kernel failed; 2 no usable GPU or no kernel in
+# the kit (no receipt); 3 kit kernels changed; 4 no sign-off.
 # INTERIM: this wrapper and kit/*.py are host glue; the Omega successor is described in DEPENDENCIES.md.
 cd "$(dirname "$0")" || exit 1
 command -v python3 >/dev/null 2>&1 || { echo "NOT_RUN: python3 is required"; exit 2; }

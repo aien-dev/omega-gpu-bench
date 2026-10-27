@@ -93,15 +93,20 @@ th,td{{border-color:#333}}small,.note{{color:#bbb}}.ok{{color:#6ee7b7}}.bad{{col
 <p>Run kernels whose machine code was written by Omega on your own NVIDIA GPU, check every output word
 against a CPU reference, and put your card on this board. You need an NVIDIA driver, Python 3 and git.
 No CUDA toolkit, no compiler, no pip install.</p>
+<p class="note"><b>Kernels withdrawn.</b> The six v7 cubins and the cubin writer that produced them were
+removed pending clean-room rewrite (CudaLicenseRisk Q6). Until it lands, <code>./run</code> reports NOT_RUN
+on every GPU and writes no receipt. The rows below are kept unchanged as historical records; the kernels they
+hash are withdrawn, and no new run of them is accepted.</p>
 <pre>{cmd}</pre>
-<p>It writes a receipt under <code>receipts/</code>. Open a pull request with it to
-<a href="https://github.com/{repo}">github.com/{repo}</a>; CI checks it and, once merged, it shows up here.</p>
-<p class="note"><b>What runs where.</b> The kernels are SASS assembled by Omega's <code>asm2</code> from a
-hand-written listing and wrapped into a cubin by <code>cubin.om</code>; CI rebuilds them from source and checks
-the bytes. They reach your GPU through {path}. Receipts are self-reported: CI checks the kernel hashes,
-counts, verdicts, every reported reference value (recomputed from the public seed), the output hash of a
-clean run, and the GB/s arithmetic, but nobody re-ran your GPU. The three seed rows are my own rentals on
-vast through OpenResearch on 2026-10-26, run before this kit existed; they were not timed.</p>
+<p>Once the kit ships kernels again, it writes a receipt under <code>receipts/</code>. Open a pull request
+with it to <a href="https://github.com/{repo}">github.com/{repo}</a>; CI checks it and, once merged, it shows
+up here.</p>
+<p class="note"><b>What runs where.</b> The withdrawn kernels were SASS assembled by Omega's <code>asm2</code>
+from a hand-written listing and wrapped into a cubin. They reached the GPU through {path}. Receipts are
+self-reported: CI checks the kernel hashes, counts, verdicts, every reported reference value (recomputed from
+the public seed), the output hash of a clean run, and the GB/s arithmetic, but nobody re-ran your GPU. The
+three seed rows are my own rentals on vast through OpenResearch on 2026-10-26, run before this kit existed;
+they were not timed.</p>
 <h2>Board</h2>
 <table><thead><tr><th>#</th><th>GPU</th><th>Driver</th><th>Where</th><th>Origin</th><th>Kernels</th>
 <th>vecadd speed (2<sup>26</sup> words)</th><th>Date</th><th>Receipt</th></tr></thead>
