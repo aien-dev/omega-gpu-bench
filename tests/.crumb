@@ -1,5 +1,19 @@
 {
-  "schema_version": "1.0.0",
+  "extensions": {
+    "generated": {
+      "children": [],
+      "children_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compiled_at": "2026-10-27T00:24:36Z",
+      "compiler": "crumb-compile/1",
+      "digest": "sha256:fb41e566a45969356551f67f8f6d7a9c0b22f40ad3a0eebece50d679f4faaaca",
+      "evidence_files": 0,
+      "evidence_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "files": 4,
+      "generated_at_commit": "400ded3e143a26fd8e495ff3f7c5214f9153a08f",
+      "source_tree": "sha256:13de867e03b2e0764d860cd20f6376732ed0dcf0982abf3643294053a611fdd0"
+    }
+  },
   "name": "tests",
-  "purpose": "no-GPU tests: fake libcuda fixture, tamper negative controls, committed tampered example"
+  "purpose": "no-GPU tests: fake libcuda fixture, tamper negative controls, committed tampered example",
+  "schema_version": "1.0.0"
 }

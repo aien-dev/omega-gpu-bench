@@ -1,5 +1,19 @@
 {
-  "schema_version": "1.0.0",
+  "extensions": {
+    "generated": {
+      "children": [],
+      "children_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compiled_at": "2026-10-27T00:24:36Z",
+      "compiler": "crumb-compile/1",
+      "digest": "sha256:baa307cac10f88aa17bb42c566408950264df0f4ada1abef8043c34f6daef165",
+      "evidence_files": 0,
+      "evidence_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "files": 2,
+      "generated_at_commit": "400ded3e143a26fd8e495ff3f7c5214f9153a08f",
+      "source_tree": "sha256:4f47db2983822a9e727e6ad0f804380cdeaf04ec3e91a3ec1797473488b986b0"
+    }
+  },
   "name": "kit",
-  "purpose": "interim Python kit: ./run drives bench.py, ck.py calls libcuda through ctypes"
+  "purpose": "interim Python kit: ./run drives bench.py, ck.py calls libcuda through ctypes",
+  "schema_version": "1.0.0"
 }
