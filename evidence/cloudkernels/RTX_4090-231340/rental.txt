@@ -1,0 +1,3 @@
+2026-10-26T23:13:45Z	CREATE	RTX_4090-231340	http=200	price_per_hour=0.39407408	provider=vast	status=provisioning
+2026-10-26T23:16:31Z	READY	RTX_4090-231340	after_s=166	price_per_hour=0.39407408	gpu=RTX_4090	provider=vast
+2026-10-26T23:16:58Z	DELETE	RTX_4090-231340	http=204	wall_s=192

@@ -1,0 +1,150 @@
+{
+ "evidence": {
+  "files": [
+   {
+    "path": "evidence/cloudkernels/RTX_4090-231340/driver-version.txt",
+    "sha256": "e5df95e42a3ef4fea577f66c73fd48658f91201d7a85cc1d722cc80a1c2a9651"
+   },
+   {
+    "path": "evidence/cloudkernels/RTX_4090-231340/nvidia-smi.txt",
+    "sha256": "4d814d0b7fe8c3dc031e4d5872d2402a6df235e531d02b3cf61c8688fe035dcd"
+   },
+   {
+    "path": "evidence/cloudkernels/RTX_4090-231340/rental.txt",
+    "sha256": "41283d34fee86a73ea439c28837916ed4975f50f227aa5fc99c9a763058969fa"
+   },
+   {
+    "path": "evidence/cloudkernels/RTX_4090-231340/results.jsonl",
+    "sha256": "49e167801d61b8183209f53e2df9aa7ff95e4bb4a6ba1dc4311f66e5ede394c4"
+   }
+  ],
+  "note": "Kit kernels only; alu/ctl rows of the same run are in results.jsonl. No output hash or kernel timing was recorded by that harness.",
+  "source": "CloudKernels rental run RTX_4090-231340 (aien-dev, 2026-10-26), harness ck.py, through NVIDIA libcuda"
+ },
+ "kit": {
+  "commit": null,
+  "kernels_sha256sums": null,
+  "modified": false,
+  "repo": null
+ },
+ "machine": {
+  "arch": "x86_64",
+  "cc": "8.9",
+  "cpu": "AMD EPYC 7402P 24-Core Processor",
+  "cuda_driver_api": 13000,
+  "driver_version": "580.65.06",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "kernel": "5.15.0-157-generic",
+  "nvrm": "NVRM version: NVIDIA UNIX x86_64 Kernel Module  580.65.06  Sun Jul 27 07:14:19 UTC 2025",
+  "os": "Ubuntu 24.04.3 LTS"
+ },
+ "not_run": null,
+ "origin": "cloudkernels-import",
+ "path": "NVIDIA libcuda (cuModuleLoadData + cuLaunchKernel): an interop oracle for Omega's machine-code encoder and cubin writer, not CUDA++'s own user-space driver path",
+ "provider": "vast (rented through OpenResearch)",
+ "receipt_sha256": "24bc78ab006e277f51bd0ff5c425cf5918b26a13393223b6130bde69d9207bab",
+ "results": [
+  {
+   "checked": 1048583,
+   "cubin": "neg_sm80_v7.cubin",
+   "cubin_sha256": "c99156d05d69eacb5aed13c9c2059dd31dc7e66005c654f0048c23e6e81c7418",
+   "error": null,
+   "first_bad": [
+    [
+     0,
+     2933846,
+     1339800579
+    ],
+    [
+     1,
+     2951185981,
+     1085748091
+    ],
+    [
+     2,
+     493186248,
+     1698942161
+    ]
+   ],
+   "gbps": null,
+   "kernel_ms": null,
+   "kind": "neg",
+   "mismatches": 1048583,
+   "output_sha256": null,
+   "timing_error": null,
+   "timing_n": null,
+   "verdict": "NEG_DETECTED"
+  },
+  {
+   "checked": 1048583,
+   "cubin": "neg_sm89_v7.cubin",
+   "cubin_sha256": "d949c29a75fa1d5b7a7892ee39370446e3d2c6e1e0e738001ab946bdb758a5b9",
+   "error": null,
+   "first_bad": [
+    [
+     0,
+     1311556694,
+     1339800579
+    ],
+    [
+     1,
+     4259808829,
+     1085748091
+    ],
+    [
+     2,
+     1801809096,
+     1698942161
+    ]
+   ],
+   "gbps": null,
+   "kernel_ms": null,
+   "kind": "neg",
+   "mismatches": 1048583,
+   "output_sha256": null,
+   "timing_error": null,
+   "timing_n": null,
+   "verdict": "NEG_DETECTED"
+  },
+  {
+   "checked": 1048583,
+   "cubin": "vecadd_sm80_v7.cubin",
+   "cubin_sha256": "b9fe4b043e9c3adc2d5552d82fb924122b4dbfdca6d4d684f08cfd6670f3cd6e",
+   "error": null,
+   "first_bad": [],
+   "gbps": null,
+   "kernel_ms": null,
+   "kind": "vecadd",
+   "mismatches": 0,
+   "output_sha256": null,
+   "timing_error": null,
+   "timing_n": null,
+   "verdict": "PASS"
+  },
+  {
+   "checked": 1048583,
+   "cubin": "vecadd_sm89_v7.cubin",
+   "cubin_sha256": "2e71dc66b564dc15174d3c059aed10189485da1e5a637dfa49bc3e6f42e196e0",
+   "error": null,
+   "first_bad": [],
+   "gbps": null,
+   "kernel_ms": null,
+   "kind": "vecadd",
+   "mismatches": 0,
+   "output_sha256": null,
+   "timing_error": null,
+   "timing_n": null,
+   "verdict": "PASS"
+  }
+ ],
+ "run": {
+  "driver": "libcuda",
+  "python": null,
+  "utc": "2026-10-26T23:16:33Z"
+ },
+ "schema": "omega-gpu-bench/receipt/v1",
+ "submitter": {
+  "signed_off_by": "Aien agents, CloudKernels import <aien@aienos.com>",
+  "statement": "Imported from aien-dev's own CloudKernels run RTX_4090-231340; not run with this kit."
+ }
+}
