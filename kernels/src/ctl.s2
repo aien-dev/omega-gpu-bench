@@ -1,0 +1,256 @@
+; ctl.s2 -- control flow on sm_80: a divergent loop, a divergent if/else (BSSY/BSYNC reconvergence),
+; a warp butterfly reduction (SHFL.BFLY) and a global atomic (RED.ADD):
+;   k = a[i] & 15;  s = sum of j*j for j < k;  s = i odd ? s ^ 0xff : s + 3;  o[i] = s
+;   *sum += (sum of s over the warp), added once per warp by lane 0              i < n
+; Parameters: a 0x160, o 0x168, sum 0x170, n 0x178 (cubin signature pppu). Launch whole warps (n a
+; multiple of 32): the reduction assumes all 32 lanes are present.
+; Written by hand in asm2's language with the names of sm80.tbl, CUDA ABI constant bank
+; (c[0x0][0x0] blockDim.x, 0x28 stack top, parameters from 0x160): the layout NVIDIA's driver fills
+; when the kernel is loaded through cuModuleLoadData (seed/sm80/cubin.om writes the matching .nv.info).
+; Schedule, conservative on purpose: every fixed-latency instruction stalls 15 cycles; every
+; variable-latency one (NAK's has_fixed_latency, `NAKREF_LAT=1 nakref listing`) sets a scoreboard
+; and the next instruction that needs anything waits on all six (mask 63). A scoreboard is armed
+; 2 cycles after the instruction that sets it issues (Mesa NAK calc_instr_deps.rs, `bars[bar] + 2`),
+; so a setter whose next instruction waits stalls 2, not 1 (instructions 4 and 10 stalled 1 before;
+; ctl passed on chip anyway, the same race broke alu). cubin.om refuses such a listing with exit 7.
+; Referee: `nakref listing 80 <this> <out>` must give the same bytes as asm2 + sm80.tbl.
+;  0 LDC R1, c[0x0][0x28]   stack top (CUDA ABI)
+  ldc.0 7 1 255
+  cb.1 0x28 0
+  ldc.2 4 0
+  c 1 1 7 7 0 0
+;  1 S2R R9, SR_CTAID.X
+  s2r.0 7 9
+  z.1
+  s2r.2 0x25
+  c 1 1 0 7 0 0
+;  2 ULDC UR4, c[0x0][0x0]   blockDim.x
+  uldc.0 7 4
+  cb.1 0x0 0
+  uldc.2 4
+  c 1 1 1 7 0 0
+;  3 S2R R0, SR_TID.X
+  s2r.0 7 0
+  z.1
+  s2r.2 0x21
+  c 1 1 2 7 0 0
+;  4 ULDC UR5, c[0x0][0x178]   n
+  uldc.0 7 5
+  cb.1 0x178 0
+  uldc.2 4
+  c 2 1 3 7 0 0
+;  5 IMAD R9, R9, UR4, R0   i = block * blockDim + thread
+  imad.u.0 7 9 9
+  u.1 4
+  imad.u.2 0 0
+  c 15 0 7 7 63 0
+;  6 ISETP.GE.U32.AND P0, PT, R9, UR5, PT
+  isetp.u.0 7 9
+  u.1 5
+  isetp.u.2 7 0 0 0 6 0 7
+  c 15 0 7 7 0 0
+;  7 @P0 EXIT
+  exit.0 0
+  z.1
+  exit.2
+  c 5 1 7 7 0 0
+;  8 LDC.64 R2, c[0x0][0x160]   first pointer
+  ldc.0 7 2 255
+  cb.1 0x160 0
+  ldc.2 5 0
+  c 1 1 0 7 0 0
+;  9 LDC.64 R4, c[0x0][0x168]   second pointer
+  ldc.0 7 4 255
+  cb.1 0x168 0
+  ldc.2 5 0
+  c 1 1 1 7 0 0
+; 10 LDC.64 R6, c[0x0][0x170]   third pointer
+  ldc.0 7 6 255
+  cb.1 0x170 0
+  ldc.2 5 0
+  c 2 1 2 7 0 0
+; 11 IMAD.WIDE.U32 R2, R9, 0x4, R2
+  imadw.i.0 7 2 9
+  n.1 4
+  imad.2 2 0
+  c 15 0 7 7 63 0
+; 12 LDG.E R10, [R2.64]
+  ldg.0 7 10 2
+  ldg.1 63 0
+  ldg.2 0 1 4 7 1 1
+  c 2 1 3 7 0 0
+; 13 IMAD.WIDE.U32 R4, R9, 0x4, R4
+  imadw.i.0 7 4 9
+  n.1 4
+  imad.2 4 0
+  c 15 0 7 7 0 0
+; 14 LOP3.LUT R10, R10, 0xf, RZ, 0xc0   k = a[i] & 15
+  lop3.i.0 7 10 10
+  n.1 0xf
+  lop3.2 255 0xc0
+  c 15 0 7 7 63 0
+; 15 MOV R11, 0x0   s
+  mov.i.0 7 11
+  n.1 0
+  mov.2 15
+  c 15 0 7 7 0 0
+; 16 MOV R12, 0x0   j
+  mov.i.0 7 12
+  n.1 0
+  mov.2 15
+  c 15 0 7 7 0 0
+; 17 BSSY B0, to 24   (loop reconvergence)
+  bssy.0 7 0
+  bssy.1 6
+  bssy.2 7
+  c 15 0 7 7 0 0
+; 18 loop: ISETP.GE.U32.AND P1, PT, R12, R10, PT
+  isetp.0 7 12
+  r.1 10
+  isetp.2 7 0 0 0 6 1 7
+  c 15 0 7 7 0 0
+; 19 @P1 BRA to 23
+  bra.0 1
+  bra.1 3
+  bra.2 0 7
+  c 5 1 7 7 0 0
+; 20 IMAD R11, R12, R12, R11   s += j * j
+  imad.0 7 11 12
+  r.1 12
+  imad.2 11 0
+  c 15 0 7 7 0 0
+; 21 IADD3 R12, R12, 0x1, RZ   j++
+  iadd3.i.0 7 12 12
+  n.1 1
+  iadd3.2 255 7 7
+  c 15 0 7 7 0 0
+; 22 BRA to 18 (back)
+  bra.0 7
+  bra.1 0x0ffffffb
+  bra.2 -1 7
+  c 5 1 7 7 0 0
+; 23 BSYNC B0
+  bsync.0 7 0
+  z.1
+  bsync.2 7
+  c 15 0 7 7 0 0
+; 24 LOP3.LUT R13, R9, 0x1, RZ, 0xc0   i & 1
+  lop3.i.0 7 13 9
+  n.1 1
+  lop3.2 255 0xc0
+  c 15 0 7 7 0 0
+; 25 ISETP.NE.U32.AND P0, PT, R13, 0x0, PT
+  isetp.i.0 7 13
+  n.1 0
+  isetp.2 7 0 0 0 5 0 7
+  c 15 0 7 7 0 0
+; 26 BSSY B1, to 32   (if/else reconvergence)
+  bssy.0 7 1
+  bssy.1 5
+  bssy.2 7
+  c 15 0 7 7 0 0
+; 27 @P0 BRA to 30   odd lanes
+  bra.0 0
+  bra.1 2
+  bra.2 0 7
+  c 5 1 7 7 0 0
+; 28 IADD3 R11, R11, 0x3, RZ   even: s += 3
+  iadd3.i.0 7 11 11
+  n.1 3
+  iadd3.2 255 7 7
+  c 15 0 7 7 0 0
+; 29 BRA to 31
+  bra.0 7
+  bra.1 1
+  bra.2 0 7
+  c 5 1 7 7 0 0
+; 30 LOP3.LUT R11, R11, 0xff, RZ, 0x3c   odd: s ^= 0xff
+  lop3.i.0 7 11 11
+  n.1 0xff
+  lop3.2 255 0x3c
+  c 15 0 7 7 0 0
+; 31 BSYNC B1
+  bsync.0 7 1
+  z.1
+  bsync.2 7
+  c 15 0 7 7 0 0
+; 32 STG.E [R4.64], R11
+  stg.0 7 4
+  stg.1 11 0
+  stg.2 63 1 4 7 1 1
+  c 2 1 7 4 0 0
+; 33 SHFL.BFLY PT, R14, R11, 0x10, 0x1f
+  shfl.ii.0 7 14 11
+  shfl.ii.1 0x1f 16 3
+  shfl.ci.2 7
+  c 2 1 0 7 0 0
+; 34 IADD3 R11, R11, R14, RZ
+  iadd3.0 7 11 11
+  r.1 14
+  iadd3.2 255 7 7
+  c 15 0 7 7 63 0
+; 35 SHFL.BFLY PT, R14, R11, 0x8, 0x1f
+  shfl.ii.0 7 14 11
+  shfl.ii.1 0x1f 8 3
+  shfl.ci.2 7
+  c 2 1 0 7 0 0
+; 36 IADD3 R11, R11, R14, RZ
+  iadd3.0 7 11 11
+  r.1 14
+  iadd3.2 255 7 7
+  c 15 0 7 7 63 0
+; 37 SHFL.BFLY PT, R14, R11, 0x4, 0x1f
+  shfl.ii.0 7 14 11
+  shfl.ii.1 0x1f 4 3
+  shfl.ci.2 7
+  c 2 1 0 7 0 0
+; 38 IADD3 R11, R11, R14, RZ
+  iadd3.0 7 11 11
+  r.1 14
+  iadd3.2 255 7 7
+  c 15 0 7 7 63 0
+; 39 SHFL.BFLY PT, R14, R11, 0x2, 0x1f
+  shfl.ii.0 7 14 11
+  shfl.ii.1 0x1f 2 3
+  shfl.ci.2 7
+  c 2 1 0 7 0 0
+; 40 IADD3 R11, R11, R14, RZ
+  iadd3.0 7 11 11
+  r.1 14
+  iadd3.2 255 7 7
+  c 15 0 7 7 63 0
+; 41 SHFL.BFLY PT, R14, R11, 0x1, 0x1f
+  shfl.ii.0 7 14 11
+  shfl.ii.1 0x1f 1 3
+  shfl.ci.2 7
+  c 2 1 0 7 0 0
+; 42 IADD3 R11, R11, R14, RZ
+  iadd3.0 7 11 11
+  r.1 14
+  iadd3.2 255 7 7
+  c 15 0 7 7 63 0
+; 43 LOP3.LUT R13, R0, 0x1f, RZ, 0xc0   lane
+  lop3.i.0 7 13 0
+  n.1 0x1f
+  lop3.2 255 0xc0
+  c 15 0 7 7 0 0
+; 44 ISETP.EQ.U32.AND P0, PT, R13, 0x0, PT
+  isetp.i.0 7 13
+  n.1 0
+  isetp.2 7 0 0 0 2 0 7
+  c 15 0 7 7 0 0
+; 45 @P0 RED.E.ADD.STRONG.GPU [R6.64], R11   lane 0: *sum += warp total
+  red.0 0 6
+  stg.1 11 0
+  red.2 63 1 0 7 1 0 1
+  c 2 1 7 5 0 0
+; 46 EXIT   after every scoreboard
+  exit.0 7
+  z.1
+  exit.2
+  c 5 1 7 7 63 0
+; 47 BRA to itself
+  bra.0 7
+  bra.1 0x0fffffff
+  bra.2 -1 7
+  c 0 0 7 7 0 0

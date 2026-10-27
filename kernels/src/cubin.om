@@ -1,27 +1,48 @@
 note cubin.om -- wraps asm2 machine code for one kernel in a cubin, the ELF that NVIDIA's CUDA
 note driver loads with cuModuleLoadData. It follows the CUDA kernel-parameter ABI, not CUDA++'s:
-note parameters sit in constant bank 0 from byte 352 (sm_8x), 528 (sm_90) or 896 (sm_120).
-note The layout was read from nvcc 13.0 and CUDA 12.8 cubins with readelf and cuobjdump -elf
+note parameters sit in constant bank 0 from byte 352 (sm_8x), 528 (sm_90) or 896 (sm_100 on).
+note The layout was read from nvcc 13.0 cubins of my own probe kernels with readelf and cuobjdump -elf
 note (field values only, no bytes copied) and from CUDApp src/omega_cubin.c (sm_121):
 note   1 .shstrtab 2 .strtab 3 .symtab 4 .nv.info 5 .nv.callgraph 6 .note.nv.cuinfo
 note   7 .text.NAME 8 .nv.constant0.NAME 9 .nv.info.NAME, and from sm_90 on also
-note   10 .nv.compat 11 .nv.shared.reserved.0; then the section headers, then the program
-note   headers (PHDR, LOAD of the header table, LOAD text, [LOAD shared,] LOAD constant bank).
+note   10 .nv.compat 11 .nv.shared.reserved.0; ABI 8 appends .note.nv.tkinfo, which every
+note   NVIDIA ABI 8 cubin read carries (nvcc 13.0 sm_80/89/90/100/103/120) and
+note   .note.nv.cuinfo links to; then the section headers, then the program headers (PHDR,
+note   LOAD of the header table, LOAD text, [LOAD shared,] LOAD constant bank).
+note From sm_90 the .text sh_info is the kernel symbol alone (nvcc 13.0 sm_90/120);
+note below sm_90 it also carries the register count in bits 24..31 (nvcc 13.0 sm_89).
+note ABI 7 constants (ELFOSABI_CUDA 51, ELFABIVERSION_CUDA_V1 7, EF_CUDA_SM*) are LLVM's ELF.h.
+note From sm_90 .note.nv.cuinfo has SHF_INFO_LINK and sh_info .nv.compat (nvcc 13.0 sm_90/120).
 note symbols: 1 section .text, 2 section .nv.constant0, 3 the kernel (global function).
 note usage: cubin SM ABI API REGS NAME SIG < code.bin > kernel.cubin
-note   SM    80 86 87 89 90 or 120
+note   SM    80 86 87 89 90 100 103 or 120 (nvcc 13.0 sm_100, sm_103 and sm_120 emit the same
+note         vecadd instruction bytes; their cubins differ in e_flags, the compat value
+note         CAN_FASTPATH_FINALIZE (sm_100 9, sm_103 0, sm_120 80) and EIATTR_SW_WAR (8 on
+note         sm_90/100/103, 0 on sm_120))
 note   ABI   8 (CUDA 13 style: OS/ABI 0x41, e_flags 0x6000000 | SM << 8 | 4, or | 2 from sm_100)
 note         or 7 (CUDA 12 style: OS/ABI 0x33, e_flags SM << 16 | 0x500 | SM; below sm_100 only)
 note   API   the EIATTR_CUDA_API_VERSION number (130 = CUDA 13.0, 128 = CUDA 12.8)
-note   REGS  registers per thread (1..255)
+note   REGS  general registers the code uses: highest Rn written or read, plus one, counting the
+note         top register of every 64- and 128-bit pair (1..253). The cubin records REGS + 2:
+note         from Volta on the hardware burns 2 GPRs for the program counter (Mesa NAK
+note         sm70.rs hw_reserved_gprs; nvcc 13.0 records highest Rn + 3, measured on three
+note         sm_89 kernels). Recording the bare count makes the top 2 registers illegal:
+note         alu/ctl with REGS 16 writing R14/R15 raised CUDA_ERROR_ILLEGAL_INSTRUCTION (715).
 note   NAME  kernel symbol, 1..32 bytes of [A-Za-z0-9_]
 note   SIG   one letter per parameter in order: p = 8-byte pointer, u = 4-byte integer (1..16)
 note stdin: the instruction bytes, a whole number of 16-byte instructions, below 65536 bytes,
 note with at least one EXIT (its offsets go into EIATTR_EXIT_INSTR_OFFSETS).
-note exit 0 written; 1 usage; 2 bad number; 3 bad name or signature; 4 bad input; 5 write failed.
+note exit 0 written; 1 usage; 2 bad number; 3 bad name or signature; 4 bad input; 5 write failed;
+note 6 REGS below a register named in byte 2 (bits 16..23) of an instruction other than
+note control flow and NOP: the destination field of the Volta+ formats. The check is
+note conservative (that byte also holds uniform and barrier register numbers) and partial (it
+note cannot see the top half of a register pair or source registers);
+note 7 a scoreboard set less than 2 cycles before an instruction that waits on it (see sbchk).
 
-text tsn ".shstrtab|.strtab|.symtab|.nv.info|.nv.callgraph|.note.nv.cuinfo|.text.|.nv.constant0.|.nv.info.|.nv.compat|.nv.shared.reserved.0|"
+text tsn ".shstrtab|.strtab|.symtab|.nv.info|.nv.callgraph|.note.nv.cuinfo|.text.|.nv.constant0.|.nv.info.|.nv.compat|.nv.shared.reserved.0|.note.nv.tkinfo|"
 text tnv "NVIDIA Corp"
+note the .note.nv.tkinfo strings: tool, tool version, build, options (the SM is appended)
+text ttk "cubin.om|Aien CUDA++ cubin.om (omega-mv seed/sm80)|omega-mv seed/sm80|-arch sm_"
 
 global ob uchar 262144
 global tx uchar 65536
@@ -58,6 +79,8 @@ const VPB ulong 12
 const VNEW ulong 13
 const VNPH ulong 14
 const VRES ulong 15
+const VNSB ulong 16
+const VTK ulong 17
 
 fn b1 o ulong x ulong to void
 put ob o uchar and x 255
@@ -149,6 +172,9 @@ end
 if or eq sm 90 eq sm 120
 ok = true
 end
+if or eq sm 100 eq sm 103
+ok = true
+end
 if not ok
 exit 2
 end
@@ -161,7 +187,7 @@ end
 if or lt api 1 gt api 1000
 exit 2
 end
-if or lt rg 1 gt rg 255
+if or lt rg 1 gt rg 253
 exit 2
 end
 put v VSM sm
@@ -187,6 +213,12 @@ put v VNPH 5
 end
 if ge sm 100
 put v VRES 64
+end
+put v VNSB get v VNS
+put v VTK 0
+if eq abi 8
+put v VTK get v VNS
+put v VNS add get v VNS 1
 end
 names
 sigs
@@ -257,6 +289,88 @@ end
 put v VTL t
 end
 
+note REGS must cover every register named in byte 2 of an instruction (255 is RZ); the
+note control-flow opcodes 0x940..0x95f (BRA, EXIT, BSSY, BSYNC, CALL, RET, WARPSYNC, ...) and
+note NOP (0x918) keep branch offsets or nothing there and are skipped. The cubin then records
+note REGS + 2 for the 2 GPRs Volta+ hardware keeps for the program counter
+fn regchk to void
+t = get v VTL
+m = ulong 0
+i = ulong 0
+while lt i t
+r = ulong get tx add i 2
+op = and or ulong get tx i shl ulong get tx add i 1 8 4095
+if ne r 255
+if ne and op 4064 2368
+if ne op 2328
+if ge r m
+m = add r 1
+end
+end
+end
+end
+i = add i 16
+end
+rg = get v VREG
+if lt rg m
+exit 6
+end
+put v VREG add rg 2
+end
+
+note the 24 control bits 104..127 of the instruction at byte i (Volta+ layout: stall 105..108,
+note yield 109, write scoreboard 110..112, read scoreboard 113..115, wait mask 116..121)
+fn cbits i ulong to ulong
+ret or or ulong get tx add i 13 shl ulong get tx add i 14 8 shl ulong get tx add i 15 16
+end
+
+note A scoreboard (0..5; 7 is none) set by an instruction is not visible to an instruction that
+note issues less than 2 cycles later: waiting on it there falls through before it is armed, and
+note the waiter reads a register the load has not written yet. Mesa NAK gives the rule in
+note calc_instr_deps.rs (BlockDelayScheduler::process_instr: an instruction setting rd_bar or
+note wr_bar starts at least `bars[bar] + 2` cycles before the first wait on it); nvcc 13.0 sm_80,
+note sm_86 and sm_89 builds of my alu, vecadd and reduction probes never wait sooner than 2
+note cycles. alu.s2 waited 1 cycle after LDC.64 R6 and could compute the float output address
+note from a stale R6 (RTX 4090, four rentals, drivers 580.126.09 to 615.71.09: 33 to 289 wrong
+note words or an address fault 700, 716 or 717, varying run to run; a wait on any of
+note instructions 12..14 cured it).
+note Every path out of a setter runs through the next instruction, so the check is local:
+note a setter must stall at least 1; when it stalls exactly 1, the next instruction must not
+note wait on that scoreboard and must stall at least 1 itself.
+fn sbchk to void
+t = get v VTL
+i = ulong 0
+while lt i t
+c = cbits i
+s = and shr c 1 15
+w = and shr c 6 7
+r = and shr c 9 7
+mk = ulong 0
+if lt w 6
+mk = shl ulong 1 w
+end
+if lt r 6
+mk = or mk shl ulong 1 r
+end
+j = add i 16
+if gt mk 0
+if eq s 0
+exit 7
+end
+if and eq s 1 lt j t
+d = cbits j
+if ne and shr d 12 mk 0
+exit 7
+end
+if eq and shr d 1 15 0
+exit 7
+end
+end
+end
+i = j
+end
+end
+
 note the EXIT instructions: the low 12 bits of the first word are 0x94d (2381)
 fn isexit i ulong to bool
 w = or ulong get tx i shl ulong get tx add i 1 8
@@ -269,12 +383,19 @@ put ob o 0
 p = add o 1
 j = ulong 1
 st = p
-n = get v VNS
+nb = get v VNSB
+tk = get v VTK
 for i ulong len tsn
 c = get tsn i
-if lt j n
+k = j
+on = lt j nb
+if eq j 12
+k = tk
+on = gt tk 0
+end
+if on
 if eq c 124
-put snm j sub st o
+put snm k sub st o
 if and ge j 7 le j 9
 p = nput p
 end
@@ -343,6 +464,52 @@ b2 add o 24 2
 b2 add o 26 get v VSM
 b4 add o 28 get v VAPI
 ret add o 32
+end
+
+note decimal digits of x (10..999) at p
+fn decn p ulong x ulong to ulong
+q = p
+if ge x 100
+put ob q uchar add 48 div x 100
+q = add q 1
+end
+put ob q uchar add 48 rem div x 10 10
+put ob add q 1 uchar add 48 rem x 10
+ret add q 2
+end
+
+note .note.nv.tkinfo, note type 2000: a 24-byte header (word 0 is 2 as in nvcc 13.0, then 0,
+note then the offsets of four strings in the table that follows), the table opening with a 0
+fn tkinfo o ulong to ulong
+b4 o 12
+b4 add o 8 2000
+for i ulong len tnv
+put ob add add o 12 i get tnv i
+end
+d = add o 24
+s = add d 24
+b4 d 2
+b4 add d 8 1
+put ob s 0
+p = add s 1
+w = add d 12
+for i ulong len ttk
+c = get ttk i
+if eq c 124
+put ob p 0
+p = add p 1
+b4 w sub p s
+w = add w 4
+else
+put ob p c
+p = add p 1
+end
+end
+p = decn p get v VSM
+put ob p 0
+e = al add p 1 4
+b4 add o 4 sub e d
+ret e
 end
 
 fn textc o ulong to ulong
@@ -415,9 +582,12 @@ p = at4 o 55 4
 b4 p get v VAPI
 p = add p 4
 if eq get v VNEW 0
+if eq get v VABI 7
 b1 p 1
 b1 add p 1 53
-p = cbank add p 4
+p = add p 4
+end
+p = cbank p
 p = at3 p 25 get v VPSZ
 p = kparams p
 p = at3 p 27 255
@@ -437,7 +607,10 @@ p = exits p
 p = at3 p 25 get v VPSZ
 p = cbank p
 p = at4 p 54 4
-if eq get v VSM 90
+if or eq get v VSM 90 eq get v VSM 100
+b4 p 8
+end
+if eq get v VSM 103
 b4 p 8
 end
 ret add p 4
@@ -454,10 +627,16 @@ b4 add o 24 527108
 if eq get v VSM 120
 b4 add o 28 80
 end
+if eq get v VSM 100
+b4 add o 28 9
+end
 ret add o 36
 end
 
 fn wsec k ulong o ulong to ulong
+if eq k get v VTK
+ret tkinfo o
+end
 if eq k 1
 ret shname o
 end
@@ -506,9 +685,17 @@ f = ulong 16777216
 if eq get v VNEW 1
 f = 16777280
 end
-sec 6 7 f 0 0
+inf = ulong 0
+if eq get v VNEW 1
+inf = 10
+end
+sec 6 7 f get v VTK inf
 sec2 6 4 0
-sec 7 1 6 3 or shl get v VREG 24 3
+ti = or shl get v VREG 24 3
+if eq get v VNEW 1
+ti = 3
+end
+sec 7 1 6 3 ti
 sec2 7 128 0
 sec 8 1 66 0 7
 sec2 8 4 0
@@ -518,6 +705,11 @@ sec 10 1879048326 0 0 0
 sec2 10 4 0
 sec 11 8 3 0 0
 sec2 11 1 0
+t = get v VTK
+if gt t 0
+sec t 7 33554432 0 0
+sec2 t 4 0
+end
 end
 
 fn build to void
@@ -637,6 +829,8 @@ exit 1
 end
 args
 readin
+regchk
+sbchk
 table
 build
 ehdr

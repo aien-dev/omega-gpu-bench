@@ -3,17 +3,17 @@
     "generated": {
       "children": [],
       "children_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "compiled_at": "2026-10-27T00:24:36Z",
+      "compiled_at": "2026-10-27T08:13:31Z",
       "compiler": "crumb-compile/1",
-      "digest": "sha256:4b47ab98285a3fe89acf7a5caee2a2e841fdfb55d3f7d7251590ff561f701da1",
+      "digest": "sha256:71fbdee0d9edf423514e31ae369794db46597a939973e8d20910ccfae735e0f0",
       "evidence_files": 0,
       "evidence_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "files": 11,
-      "generated_at_commit": "400ded3e143a26fd8e495ff3f7c5214f9153a08f",
-      "source_tree": "sha256:b156040adeb9e27fac3d4ca79316647a37f0b86ea732320aa66535d886849253"
+      "generated_at_commit": "be6e65acafa9f75e705a308100bc5ddec8bfaa66",
+      "source_tree": "sha256:db7d2f9eaf031c2d673f6317bee1edbaac3428b788349e2c9d1cf2ee357d0220"
     }
   },
   "name": "kernels",
-  "purpose": "six Omega-encoded v7 cubins (vecadd/neg for sm_80/86/89), their sources and the byte-for-byte rebuild",
+  "purpose": "six Omega-encoded v7 cubins (vecadd/neg for sm_80/86/89), their sources and the byte-for-byte rebuild; 24 pending alu/ctl/vecadd/neg v7+v8 images (hashes only, kept out of the kit until a chip run) and the read-only nvdisasm/cuobjdump/readelf oracle",
   "schema_version": "1.0.0"
 }

@@ -1,6 +1,8 @@
 # CI: the kit and validator tests (no GPU; the fixture driver stands in for libcuda and is rejected as
-# evidence), and a rebuild of all six kernels from source with the pinned Omega tools on a GitHub-hosted
-# arm64 machine. Host evidence on a GitHub runner; it never touches a GPU.
+# evidence), and a rebuild of the six kit cubins and the 24 pending images from source with the pinned
+# Omega tools on a GitHub-hosted arm64 machine, including the scoreboard and register refusals.
+# Host evidence on a GitHub runner; it never touches a GPU. kernels/src/oracle.sh needs a CUDA toolkit
+# and does not run here (NOT_RUN in CI; see README "Offline oracle").
 name: ci
 on:
   push:
@@ -29,11 +31,17 @@ jobs:
           git init --quiet ../omega-mv
           git -C ../omega-mv fetch --quiet --depth 1 https://github.com/aien-dev/omega-mv.git 7ca3f989cbd62e77de1dd7d23919edd083fd2113
           git -C ../omega-mv checkout --quiet FETCH_HEAD
-      - name: rebuild the six cubins and compare with kernels/SHA256SUMS
+      - name: rebuild the six cubins and the 24 pending images, compare with kernels/SHA256SUMS and kernels/pending/SHA256SUMS, require the three refusals
         run: kernels/src/build.sh ../omega-mv
       - name: negative control (neg.cuda.s2 changed back to vecadd's operand must fail the comparison)
         run: |
           cp -r kernels ../mutated
           awk 'NR==72{print "r.1 5"; next}{print}' kernels/src/neg.cuda.s2 > ../mutated/src/neg.cuda.s2
+          if ../mutated/src/build.sh ../omega-mv; then echo "negative control passed: the check cannot fail"; exit 1; fi
+          echo "negative control rejected as expected"
+      - name: negative control (one stall changed in alu.s2 must fail the pending comparison)
+        run: |
+          rm -rf ../mutated && cp -r kernels ../mutated
+          awk 'NR==45{print "  c 14 0 7 7 63 0"; next}{print}' kernels/src/alu.s2 > ../mutated/src/alu.s2
           if ../mutated/src/build.sh ../omega-mv; then echo "negative control passed: the check cannot fail"; exit 1; fi
           echo "negative control rejected as expected"

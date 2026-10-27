@@ -8,8 +8,10 @@
   A receipt is self-reported, not hardware qualification. Spell it "Aien"; page and README copy is first
   person singular.
 - **Kernels:** only add a cubin together with its source in `kernels/src/`, a `build.sh` rebuild that
-  reproduces it byte for byte, and a matching `neg` negative control. The CloudKernels alu/ctl and v8
-  cubins are excluded on purpose (they fail with CUDA_ERROR_ILLEGAL_INSTRUCTION or crash 12.x drivers).
+  reproduces it byte for byte, and a matching `neg` negative control. The alu/ctl and v8 images are
+  fixed in source (README "Known losses") but stay in `kernels/pending/` (hashes only) until a chip run
+  on sm_80/86/89 passes; never move them into the kit on host evidence alone. Never remove the
+  scoreboard (exit 7) or register (exit 6) refusals from `cubin.om` or `build.sh`.
 - **Language:** the kit and tools are interim Python and sh; each has its Omega successor in
   DEPENDENCIES.md. New host programs go there with version, purpose and replacement.
 - **Never run `./run` against a shared or production GPU host without its owner's window.** Use

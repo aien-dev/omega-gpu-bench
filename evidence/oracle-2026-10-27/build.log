@@ -1,0 +1,29 @@
+2026-10-27T08:08:54Z
+host: Linux 7.0.0-1019-nvidia aarch64; omega-mv 7ca3f989cbd62e77de1dd7d23919edd083fd2113
+$ nice -n 19 taskset -c 10-14 sh kernels/src/build.sh ../omega-mv /tmp/gbf/out
+pin ok   ../omega-mv/seed/out/omc
+pin ok   ../omega-mv/seed/rung2/asm2.bin
+pin ok   ../omega-mv/seed/sm80/sm80.tbl
+pin ok   /home/drakestapleton/work/GpuBenchFix/omega-gpu-bench/kernels/src/cubin.om
+PASS: 6 cubins rebuilt from source are byte-identical to kernels/SHA256SUMS
+PASS: 24 pending cubins rebuilt from source are byte-identical to kernels/pending/SHA256SUMS
+PASS: refused (alu scoreboard waited 1 cycle after it was set, exit 7)
+PASS: refused (ctl scoreboard waited 1 cycle after it was set, exit 7)
+PASS: refused (alu REGS 15 below R15, exit 6)
+exit 0
+
+## the two CI negative controls, run locally (2026-10-27T08:12:20Z)
+$ (neg.cuda.s2 line 72 -> "r.1 5") build.sh
+FAIL: rebuilt cubins differ from kernels/SHA256SUMS
+FAIL: pending cubins differ from kernels/pending/SHA256SUMS
+PASS: refused (alu scoreboard waited 1 cycle after it was set, exit 7)
+PASS: refused (ctl scoreboard waited 1 cycle after it was set, exit 7)
+PASS: refused (alu REGS 15 below R15, exit 6)
+exit 1 (must be nonzero)
+$ (alu.s2 line 45 stall 15 -> 14) build.sh
+PASS: 6 cubins rebuilt from source are byte-identical to kernels/SHA256SUMS
+FAIL: pending cubins differ from kernels/pending/SHA256SUMS
+PASS: refused (alu scoreboard waited 1 cycle after it was set, exit 7)
+PASS: refused (ctl scoreboard waited 1 cycle after it was set, exit 7)
+PASS: refused (alu REGS 15 below R15, exit 6)
+exit 1 (must be nonzero)

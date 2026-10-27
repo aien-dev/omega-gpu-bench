@@ -1,0 +1,390 @@
+2026-10-27T08:09:05Z
+host: Linux 7.0.0-1019-nvidia aarch64; nvdisasm/cuobjdump from /usr/local/cuda (CUDA 13.0 V13.0.88)
+
+## 1. this repository: kernels/*.cubin and the 24 pending cubins from build.log
+$ sh kernels/src/oracle.sh kernels/*.cubin /tmp/gbf/out/pending/*.cubin
+oracle: Build cuda_13.0.r13.0/compiler.36400806_0; GNU readelf (GNU Binutils for Ubuntu) 2.42
+PASS  hdr  neg_sm80_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x500550, want 0x33 7 0x500550
+PASS  tkinfo  neg_sm80_v7  .note.nv.tkinfo sections: 0
+PASS  decode  neg_sm80_v7  nvdisasm exit 0
+PASS  regs  neg_sm80_v7  REG 16, highest register R9, want at least 12
+PASS  sb  neg_sm80_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neg_sm86_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x560556, want 0x33 7 0x560556
+PASS  tkinfo  neg_sm86_v7  .note.nv.tkinfo sections: 0
+PASS  decode  neg_sm86_v7  nvdisasm exit 0
+PASS  regs  neg_sm86_v7  REG 16, highest register R9, want at least 12
+PASS  sb  neg_sm86_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neg_sm89_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x590559, want 0x33 7 0x590559
+PASS  tkinfo  neg_sm89_v7  .note.nv.tkinfo sections: 0
+PASS  decode  neg_sm89_v7  nvdisasm exit 0
+PASS  regs  neg_sm89_v7  REG 16, highest register R9, want at least 12
+PASS  sb  neg_sm89_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecadd_sm80_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x500550, want 0x33 7 0x500550
+PASS  tkinfo  vecadd_sm80_v7  .note.nv.tkinfo sections: 0
+PASS  decode  vecadd_sm80_v7  nvdisasm exit 0
+PASS  regs  vecadd_sm80_v7  REG 16, highest register R9, want at least 12
+PASS  sb  vecadd_sm80_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecadd_sm86_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x560556, want 0x33 7 0x560556
+PASS  tkinfo  vecadd_sm86_v7  .note.nv.tkinfo sections: 0
+PASS  decode  vecadd_sm86_v7  nvdisasm exit 0
+PASS  regs  vecadd_sm86_v7  REG 16, highest register R9, want at least 12
+PASS  sb  vecadd_sm86_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecadd_sm89_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x590559, want 0x33 7 0x590559
+PASS  tkinfo  vecadd_sm89_v7  .note.nv.tkinfo sections: 0
+PASS  decode  vecadd_sm89_v7  nvdisasm exit 0
+PASS  regs  vecadd_sm89_v7  REG 16, highest register R9, want at least 12
+PASS  sb  vecadd_sm89_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  alu_sm80_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x500550, want 0x33 7 0x500550
+PASS  tkinfo  alu_sm80_v7  .note.nv.tkinfo sections: 0
+PASS  decode  alu_sm80_v7  nvdisasm exit 0
+PASS  regs  alu_sm80_v7  REG 18, highest register R15, want at least 18
+PASS  sb  alu_sm80_v7  30 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  alu_sm80_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005004, want 0x41 8 0x6005004
+PASS  tkinfo  alu_sm80_v8  .note.nv.tkinfo sections: 1
+PASS  decode  alu_sm80_v8  nvdisasm exit 0
+PASS  regs  alu_sm80_v8  REG 18, highest register R15, want at least 18
+PASS  sb  alu_sm80_v8  30 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  alu_sm86_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x560556, want 0x33 7 0x560556
+PASS  tkinfo  alu_sm86_v7  .note.nv.tkinfo sections: 0
+PASS  decode  alu_sm86_v7  nvdisasm exit 0
+PASS  regs  alu_sm86_v7  REG 18, highest register R15, want at least 18
+PASS  sb  alu_sm86_v7  30 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  alu_sm86_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005604, want 0x41 8 0x6005604
+PASS  tkinfo  alu_sm86_v8  .note.nv.tkinfo sections: 1
+PASS  decode  alu_sm86_v8  nvdisasm exit 0
+PASS  regs  alu_sm86_v8  REG 18, highest register R15, want at least 18
+PASS  sb  alu_sm86_v8  30 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  alu_sm89_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x590559, want 0x33 7 0x590559
+PASS  tkinfo  alu_sm89_v7  .note.nv.tkinfo sections: 0
+PASS  decode  alu_sm89_v7  nvdisasm exit 0
+PASS  regs  alu_sm89_v7  REG 18, highest register R15, want at least 18
+PASS  sb  alu_sm89_v7  30 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  alu_sm89_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+PASS  tkinfo  alu_sm89_v8  .note.nv.tkinfo sections: 1
+PASS  decode  alu_sm89_v8  nvdisasm exit 0
+PASS  regs  alu_sm89_v8  REG 18, highest register R15, want at least 18
+PASS  sb  alu_sm89_v8  30 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  ctl_sm80_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x500550, want 0x33 7 0x500550
+PASS  tkinfo  ctl_sm80_v7  .note.nv.tkinfo sections: 0
+PASS  decode  ctl_sm80_v7  nvdisasm exit 0
+PASS  regs  ctl_sm80_v7  REG 17, highest register R14, want at least 17
+PASS  sb  ctl_sm80_v7  48 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  ctl_sm80_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005004, want 0x41 8 0x6005004
+PASS  tkinfo  ctl_sm80_v8  .note.nv.tkinfo sections: 1
+PASS  decode  ctl_sm80_v8  nvdisasm exit 0
+PASS  regs  ctl_sm80_v8  REG 17, highest register R14, want at least 17
+PASS  sb  ctl_sm80_v8  48 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  ctl_sm86_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x560556, want 0x33 7 0x560556
+PASS  tkinfo  ctl_sm86_v7  .note.nv.tkinfo sections: 0
+PASS  decode  ctl_sm86_v7  nvdisasm exit 0
+PASS  regs  ctl_sm86_v7  REG 17, highest register R14, want at least 17
+PASS  sb  ctl_sm86_v7  48 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  ctl_sm86_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005604, want 0x41 8 0x6005604
+PASS  tkinfo  ctl_sm86_v8  .note.nv.tkinfo sections: 1
+PASS  decode  ctl_sm86_v8  nvdisasm exit 0
+PASS  regs  ctl_sm86_v8  REG 17, highest register R14, want at least 17
+PASS  sb  ctl_sm86_v8  48 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  ctl_sm89_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x590559, want 0x33 7 0x590559
+PASS  tkinfo  ctl_sm89_v7  .note.nv.tkinfo sections: 0
+PASS  decode  ctl_sm89_v7  nvdisasm exit 0
+PASS  regs  ctl_sm89_v7  REG 17, highest register R14, want at least 17
+PASS  sb  ctl_sm89_v7  48 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  ctl_sm89_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+PASS  tkinfo  ctl_sm89_v8  .note.nv.tkinfo sections: 1
+PASS  decode  ctl_sm89_v8  nvdisasm exit 0
+PASS  regs  ctl_sm89_v8  REG 17, highest register R14, want at least 17
+PASS  sb  ctl_sm89_v8  48 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neg_sm80_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x500550, want 0x33 7 0x500550
+PASS  tkinfo  neg_sm80_v7  .note.nv.tkinfo sections: 0
+PASS  decode  neg_sm80_v7  nvdisasm exit 0
+PASS  regs  neg_sm80_v7  REG 16, highest register R9, want at least 12
+PASS  sb  neg_sm80_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neg_sm80_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005004, want 0x41 8 0x6005004
+PASS  tkinfo  neg_sm80_v8  .note.nv.tkinfo sections: 1
+PASS  decode  neg_sm80_v8  nvdisasm exit 0
+PASS  regs  neg_sm80_v8  REG 16, highest register R9, want at least 12
+PASS  sb  neg_sm80_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neg_sm86_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x560556, want 0x33 7 0x560556
+PASS  tkinfo  neg_sm86_v7  .note.nv.tkinfo sections: 0
+PASS  decode  neg_sm86_v7  nvdisasm exit 0
+PASS  regs  neg_sm86_v7  REG 16, highest register R9, want at least 12
+PASS  sb  neg_sm86_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neg_sm86_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005604, want 0x41 8 0x6005604
+PASS  tkinfo  neg_sm86_v8  .note.nv.tkinfo sections: 1
+PASS  decode  neg_sm86_v8  nvdisasm exit 0
+PASS  regs  neg_sm86_v8  REG 16, highest register R9, want at least 12
+PASS  sb  neg_sm86_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neg_sm89_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x590559, want 0x33 7 0x590559
+PASS  tkinfo  neg_sm89_v7  .note.nv.tkinfo sections: 0
+PASS  decode  neg_sm89_v7  nvdisasm exit 0
+PASS  regs  neg_sm89_v7  REG 16, highest register R9, want at least 12
+PASS  sb  neg_sm89_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neg_sm89_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+PASS  tkinfo  neg_sm89_v8  .note.nv.tkinfo sections: 1
+PASS  decode  neg_sm89_v8  nvdisasm exit 0
+PASS  regs  neg_sm89_v8  REG 16, highest register R9, want at least 12
+PASS  sb  neg_sm89_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecadd_sm80_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x500550, want 0x33 7 0x500550
+PASS  tkinfo  vecadd_sm80_v7  .note.nv.tkinfo sections: 0
+PASS  decode  vecadd_sm80_v7  nvdisasm exit 0
+PASS  regs  vecadd_sm80_v7  REG 16, highest register R9, want at least 12
+PASS  sb  vecadd_sm80_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecadd_sm80_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005004, want 0x41 8 0x6005004
+PASS  tkinfo  vecadd_sm80_v8  .note.nv.tkinfo sections: 1
+PASS  decode  vecadd_sm80_v8  nvdisasm exit 0
+PASS  regs  vecadd_sm80_v8  REG 16, highest register R9, want at least 12
+PASS  sb  vecadd_sm80_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecadd_sm86_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x560556, want 0x33 7 0x560556
+PASS  tkinfo  vecadd_sm86_v7  .note.nv.tkinfo sections: 0
+PASS  decode  vecadd_sm86_v7  nvdisasm exit 0
+PASS  regs  vecadd_sm86_v7  REG 16, highest register R9, want at least 12
+PASS  sb  vecadd_sm86_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecadd_sm86_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005604, want 0x41 8 0x6005604
+PASS  tkinfo  vecadd_sm86_v8  .note.nv.tkinfo sections: 1
+PASS  decode  vecadd_sm86_v8  nvdisasm exit 0
+PASS  regs  vecadd_sm86_v8  REG 16, highest register R9, want at least 12
+PASS  sb  vecadd_sm86_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecadd_sm89_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x590559, want 0x33 7 0x590559
+PASS  tkinfo  vecadd_sm89_v7  .note.nv.tkinfo sections: 0
+PASS  decode  vecadd_sm89_v7  nvdisasm exit 0
+PASS  regs  vecadd_sm89_v7  REG 16, highest register R9, want at least 12
+PASS  sb  vecadd_sm89_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecadd_sm89_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+PASS  tkinfo  vecadd_sm89_v8  .note.nv.tkinfo sections: 1
+PASS  decode  vecadd_sm89_v8  nvdisasm exit 0
+PASS  regs  vecadd_sm89_v8  REG 16, highest register R9, want at least 12
+PASS  sb  vecadd_sm89_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+exit 0
+
+## 2. positive control: nvcc 13.0 builds of three probe kernels (Class B oracle output, local only, not committed)
+$ nvcc -arch=sm_80 -cubin -O3 -o alunvcc_sm80_v8.cubin alu.cu
+$ nvcc -arch=sm_80 -cubin -O3 -o vanvcc_sm80_v8.cubin va.cu
+$ nvcc -arch=sm_80 -cubin -O3 -o rnvcc_sm80_v8.cubin r.cu
+$ nvcc -arch=sm_86 -cubin -O3 -o alunvcc_sm86_v8.cubin alu.cu
+$ nvcc -arch=sm_86 -cubin -O3 -o vanvcc_sm86_v8.cubin va.cu
+$ nvcc -arch=sm_86 -cubin -O3 -o rnvcc_sm86_v8.cubin r.cu
+$ nvcc -arch=sm_89 -cubin -O3 -o alunvcc_sm89_v8.cubin alu.cu
+$ nvcc -arch=sm_89 -cubin -O3 -o vanvcc_sm89_v8.cubin va.cu
+$ nvcc -arch=sm_89 -cubin -O3 -o rnvcc_sm89_v8.cubin r.cu
+sources (sha256, in /home/drakestapleton/handoffs/CloudKernels/tmp-backup/ck2/):
+960114624540af8412aca47f107791e6d8e92e7e1044291ffce7e651f522d5dc  alu.cu
+fd7f46e5221c655a93bd1430c4b040b1bce21dc2cb7b6c296ae6cad5988cc4fa  va.cu
+ebea4b770a502a0652427fb8f1b69e61d224cfb9299c66cb725f8a087a903788  r.cu
+$ sh kernels/src/oracle.sh /tmp/gbf/pc/*.cubin
+oracle: Build cuda_13.0.r13.0/compiler.36400806_0; GNU readelf (GNU Binutils for Ubuntu) 2.42
+PASS  hdr  alunvcc_sm80_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005004, want 0x41 8 0x6005004
+PASS  tkinfo  alunvcc_sm80_v8  .note.nv.tkinfo sections: 1
+PASS  decode  alunvcc_sm80_v8  nvdisasm exit 0
+PASS  regs  alunvcc_sm80_v8  REG 14, highest register R11, want at least 14
+PASS  sb  alunvcc_sm80_v8  40 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  alunvcc_sm86_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005604, want 0x41 8 0x6005604
+PASS  tkinfo  alunvcc_sm86_v8  .note.nv.tkinfo sections: 1
+PASS  decode  alunvcc_sm86_v8  nvdisasm exit 0
+PASS  regs  alunvcc_sm86_v8  REG 14, highest register R11, want at least 14
+PASS  sb  alunvcc_sm86_v8  40 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  alunvcc_sm89_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+PASS  tkinfo  alunvcc_sm89_v8  .note.nv.tkinfo sections: 1
+PASS  decode  alunvcc_sm89_v8  nvdisasm exit 0
+PASS  regs  alunvcc_sm89_v8  REG 14, highest register R11, want at least 14
+PASS  sb  alunvcc_sm89_v8  40 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  rnvcc_sm80_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005004, want 0x41 8 0x6005004
+PASS  tkinfo  rnvcc_sm80_v8  .note.nv.tkinfo sections: 1
+PASS  decode  rnvcc_sm80_v8  nvdisasm exit 0
+PASS  regs  rnvcc_sm80_v8  REG 30, highest register R27, want at least 30
+PASS  sb  rnvcc_sm80_v8  128 instructions, shortest set-to-wait 3 cycles, 0 shorter than 2
+PASS  hdr  rnvcc_sm86_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005604, want 0x41 8 0x6005604
+PASS  tkinfo  rnvcc_sm86_v8  .note.nv.tkinfo sections: 1
+PASS  decode  rnvcc_sm86_v8  nvdisasm exit 0
+PASS  regs  rnvcc_sm86_v8  REG 40, highest register R37, want at least 40
+PASS  sb  rnvcc_sm86_v8  128 instructions, shortest set-to-wait 6 cycles, 0 shorter than 2
+PASS  hdr  rnvcc_sm89_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+PASS  tkinfo  rnvcc_sm89_v8  .note.nv.tkinfo sections: 1
+PASS  decode  rnvcc_sm89_v8  nvdisasm exit 0
+PASS  regs  rnvcc_sm89_v8  REG 40, highest register R37, want at least 40
+PASS  sb  rnvcc_sm89_v8  128 instructions, shortest set-to-wait 6 cycles, 0 shorter than 2
+PASS  hdr  vanvcc_sm80_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005004, want 0x41 8 0x6005004
+PASS  tkinfo  vanvcc_sm80_v8  .note.nv.tkinfo sections: 1
+PASS  decode  vanvcc_sm80_v8  nvdisasm exit 0
+PASS  regs  vanvcc_sm80_v8  REG 12, highest register R9, want at least 12
+PASS  sb  vanvcc_sm80_v8  32 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vanvcc_sm86_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005604, want 0x41 8 0x6005604
+PASS  tkinfo  vanvcc_sm86_v8  .note.nv.tkinfo sections: 1
+PASS  decode  vanvcc_sm86_v8  nvdisasm exit 0
+PASS  regs  vanvcc_sm86_v8  REG 12, highest register R9, want at least 12
+PASS  sb  vanvcc_sm86_v8  32 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vanvcc_sm89_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+PASS  tkinfo  vanvcc_sm89_v8  .note.nv.tkinfo sections: 1
+PASS  decode  vanvcc_sm89_v8  nvdisasm exit 0
+PASS  regs  vanvcc_sm89_v8  REG 12, highest register R9, want at least 12
+PASS  sb  vanvcc_sm89_v8  32 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+exit 0
+
+## 3. negative control: the images that failed on chip (CloudKernels payload, unchanged since before the rentals)
+payload/cub ran on RTX_4090-231340, A100_PCIE_40GB-231428, RTX_3090-231552 (evidence/cloudkernels/*/results.jsonl);
+alur7_sm89_v8base = payload-r7/cub/alu_sm89_v8base.cubin (WRONG on RTX_4090-010516); vecadd_sm89_v8old,
+vecadd_sm89_v8dNoTk = payload-r3/cub (LOAD_FAIL 200 on RTX_4090-002933). sha256:
+4679d7ea0e87693e1cf5a073d067d090ea5a5c2f89cb17659aa9663b06f01154  aluhist_sm80_v7.cubin
+1a9e4018ac9c92ee51f7afa4b17db5ffe7eda5ad90d0013f071eee5c76a7e953  aluhist_sm80_v8.cubin
+62a126bde7ed3203217421335ae6a5d3c779b201d290a206d19eafe3ac57fe1a  aluhist_sm86_v7.cubin
+d2fa7cabf5b6e42ab1993a80405add652bb9ad28a796f3d3a1405bfd83adfb3f  aluhist_sm86_v8.cubin
+329e625eb03fe1d059058f114607732a17bdee9fa3df0b3c8077c64c6322c082  aluhist_sm89_v7.cubin
+28799703bdcafb40d4595cfe265f5eea1a4bc7cda1f626430fdf1efded6b56b5  aluhist_sm89_v8.cubin
+feda95f1bac8398b2bc9f39cb5c10f6373cec5e4985589f5f8f57853e0a80577  alur7_sm89_v8base.cubin
+261b804ba9d2ef115a416d52c73033f432c7a67a57a77a89db4fc7a2073577fe  ctlhist_sm80_v7.cubin
+bb87fa7be2b759dd67d681bad130e41434e099fa2380e0f0a4ef59f3ec8814c0  ctlhist_sm80_v8.cubin
+e2b3478d335082d8b18b543562304bd02f7f877e2121d27e2f608cdc6f03670a  ctlhist_sm86_v7.cubin
+d766d701320cf39a32ec84fa2445db3f65dc5567e722173970d87f6489da969c  ctlhist_sm86_v8.cubin
+ae561bfd4b02c66a351c970b7980cf9ceac054eb4044f82f6050ae3167a8c085  ctlhist_sm89_v7.cubin
+e8fac0b8b503bad6f2c12ace52292c2903311c7a88e71a6bbd6ac4b3cb39a77a  ctlhist_sm89_v8.cubin
+c99156d05d69eacb5aed13c9c2059dd31dc7e66005c654f0048c23e6e81c7418  neghist_sm80_v7.cubin
+030106ea0b07f3e6acdb34f96b1c36425169f7fc02a0e71ba88b9929a928f859  neghist_sm80_v8.cubin
+9a39a29a77b354f218fbb49942ba72171aaadc6cd36de13f1c096e40de9e6a58  neghist_sm86_v7.cubin
+35925ffdf17bdbcb2ee245b25c085f1663ff2a83ed0fb0555974676949765748  neghist_sm86_v8.cubin
+d949c29a75fa1d5b7a7892ee39370446e3d2c6e1e0e738001ab946bdb758a5b9  neghist_sm89_v7.cubin
+7d2d598b067bdf9317a72140447a4e7bf417630e28c84ecfa09644112ca1e7e9  neghist_sm89_v8.cubin
+824c3acff65239384c4121e4c4ca65db5ce086d6a5303f71b2c2f16a88eff8c1  vecadd_sm89_v8dNoTk.cubin
+c0da89459dcea2fc8b36e1015133e34d7f289ef7734a2a145849ba8532505771  vecadd_sm89_v8old.cubin
+b9fe4b043e9c3adc2d5552d82fb924122b4dbfdca6d4d684f08cfd6670f3cd6e  vecaddhist_sm80_v7.cubin
+8a46a0112a8649d159ef3be7c87a7bd207c9c3df4f939e6d1d192c75d4d63ec5  vecaddhist_sm80_v8.cubin
+2e166ba0b1ec2918521830d65f92a1badfb8c3601e396c4f6b4a1bc6d4044549  vecaddhist_sm86_v7.cubin
+fcbb97f8bceefd807ab0591b5b72dd3e3479dc77d08ab3387989705835aa068a  vecaddhist_sm86_v8.cubin
+2e71dc66b564dc15174d3c059aed10189485da1e5a637dfa49bc3e6f42e196e0  vecaddhist_sm89_v7.cubin
+c0da89459dcea2fc8b36e1015133e34d7f289ef7734a2a145849ba8532505771  vecaddhist_sm89_v8.cubin
+$ sh kernels/src/oracle.sh /tmp/gbf/hist/*.cubin
+oracle: Build cuda_13.0.r13.0/compiler.36400806_0; GNU readelf (GNU Binutils for Ubuntu) 2.42
+PASS  hdr  aluhist_sm80_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x500550, want 0x33 7 0x500550
+PASS  tkinfo  aluhist_sm80_v7  .note.nv.tkinfo sections: 0
+PASS  decode  aluhist_sm80_v7  nvdisasm exit 0
+FAIL  regs  aluhist_sm80_v7  REG 16, highest register R15, want at least 18
+FAIL  sb  aluhist_sm80_v7  30 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  aluhist_sm80_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005004, want 0x41 8 0x6005004
+FAIL  tkinfo  aluhist_sm80_v8  .note.nv.tkinfo sections: 0
+PASS  decode  aluhist_sm80_v8  nvdisasm exit 0
+FAIL  regs  aluhist_sm80_v8  REG 16, highest register R15, want at least 18
+FAIL  sb  aluhist_sm80_v8  30 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  aluhist_sm86_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x560556, want 0x33 7 0x560556
+PASS  tkinfo  aluhist_sm86_v7  .note.nv.tkinfo sections: 0
+PASS  decode  aluhist_sm86_v7  nvdisasm exit 0
+FAIL  regs  aluhist_sm86_v7  REG 16, highest register R15, want at least 18
+FAIL  sb  aluhist_sm86_v7  30 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  aluhist_sm86_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005604, want 0x41 8 0x6005604
+FAIL  tkinfo  aluhist_sm86_v8  .note.nv.tkinfo sections: 0
+PASS  decode  aluhist_sm86_v8  nvdisasm exit 0
+FAIL  regs  aluhist_sm86_v8  REG 16, highest register R15, want at least 18
+FAIL  sb  aluhist_sm86_v8  30 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  aluhist_sm89_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x590559, want 0x33 7 0x590559
+PASS  tkinfo  aluhist_sm89_v7  .note.nv.tkinfo sections: 0
+PASS  decode  aluhist_sm89_v7  nvdisasm exit 0
+FAIL  regs  aluhist_sm89_v7  REG 16, highest register R15, want at least 18
+FAIL  sb  aluhist_sm89_v7  30 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  aluhist_sm89_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+FAIL  tkinfo  aluhist_sm89_v8  .note.nv.tkinfo sections: 0
+PASS  decode  aluhist_sm89_v8  nvdisasm exit 0
+FAIL  regs  aluhist_sm89_v8  REG 16, highest register R15, want at least 18
+FAIL  sb  aluhist_sm89_v8  30 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  alur7_sm89_v8base  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+PASS  tkinfo  alur7_sm89_v8base  .note.nv.tkinfo sections: 1
+PASS  decode  alur7_sm89_v8base  nvdisasm exit 0
+PASS  regs  alur7_sm89_v8base  REG 18, highest register R15, want at least 18
+FAIL  sb  alur7_sm89_v8base  30 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  ctlhist_sm80_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x500550, want 0x33 7 0x500550
+PASS  tkinfo  ctlhist_sm80_v7  .note.nv.tkinfo sections: 0
+PASS  decode  ctlhist_sm80_v7  nvdisasm exit 0
+FAIL  regs  ctlhist_sm80_v7  REG 16, highest register R14, want at least 17
+FAIL  sb  ctlhist_sm80_v7  48 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  ctlhist_sm80_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005004, want 0x41 8 0x6005004
+FAIL  tkinfo  ctlhist_sm80_v8  .note.nv.tkinfo sections: 0
+PASS  decode  ctlhist_sm80_v8  nvdisasm exit 0
+FAIL  regs  ctlhist_sm80_v8  REG 16, highest register R14, want at least 17
+FAIL  sb  ctlhist_sm80_v8  48 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  ctlhist_sm86_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x560556, want 0x33 7 0x560556
+PASS  tkinfo  ctlhist_sm86_v7  .note.nv.tkinfo sections: 0
+PASS  decode  ctlhist_sm86_v7  nvdisasm exit 0
+FAIL  regs  ctlhist_sm86_v7  REG 16, highest register R14, want at least 17
+FAIL  sb  ctlhist_sm86_v7  48 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  ctlhist_sm86_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005604, want 0x41 8 0x6005604
+FAIL  tkinfo  ctlhist_sm86_v8  .note.nv.tkinfo sections: 0
+PASS  decode  ctlhist_sm86_v8  nvdisasm exit 0
+FAIL  regs  ctlhist_sm86_v8  REG 16, highest register R14, want at least 17
+FAIL  sb  ctlhist_sm86_v8  48 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  ctlhist_sm89_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x590559, want 0x33 7 0x590559
+PASS  tkinfo  ctlhist_sm89_v7  .note.nv.tkinfo sections: 0
+PASS  decode  ctlhist_sm89_v7  nvdisasm exit 0
+FAIL  regs  ctlhist_sm89_v7  REG 16, highest register R14, want at least 17
+FAIL  sb  ctlhist_sm89_v7  48 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  ctlhist_sm89_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+FAIL  tkinfo  ctlhist_sm89_v8  .note.nv.tkinfo sections: 0
+PASS  decode  ctlhist_sm89_v8  nvdisasm exit 0
+FAIL  regs  ctlhist_sm89_v8  REG 16, highest register R14, want at least 17
+FAIL  sb  ctlhist_sm89_v8  48 instructions, shortest set-to-wait 1 cycles, 2 shorter than 2: 0040->0050 00a0->00b0
+PASS  hdr  neghist_sm80_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x500550, want 0x33 7 0x500550
+PASS  tkinfo  neghist_sm80_v7  .note.nv.tkinfo sections: 0
+PASS  decode  neghist_sm80_v7  nvdisasm exit 0
+PASS  regs  neghist_sm80_v7  REG 16, highest register R9, want at least 12
+PASS  sb  neghist_sm80_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neghist_sm80_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005004, want 0x41 8 0x6005004
+FAIL  tkinfo  neghist_sm80_v8  .note.nv.tkinfo sections: 0
+PASS  decode  neghist_sm80_v8  nvdisasm exit 0
+PASS  regs  neghist_sm80_v8  REG 16, highest register R9, want at least 12
+PASS  sb  neghist_sm80_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neghist_sm86_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x560556, want 0x33 7 0x560556
+PASS  tkinfo  neghist_sm86_v7  .note.nv.tkinfo sections: 0
+PASS  decode  neghist_sm86_v7  nvdisasm exit 0
+PASS  regs  neghist_sm86_v7  REG 16, highest register R9, want at least 12
+PASS  sb  neghist_sm86_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neghist_sm86_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005604, want 0x41 8 0x6005604
+FAIL  tkinfo  neghist_sm86_v8  .note.nv.tkinfo sections: 0
+PASS  decode  neghist_sm86_v8  nvdisasm exit 0
+PASS  regs  neghist_sm86_v8  REG 16, highest register R9, want at least 12
+PASS  sb  neghist_sm86_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neghist_sm89_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x590559, want 0x33 7 0x590559
+PASS  tkinfo  neghist_sm89_v7  .note.nv.tkinfo sections: 0
+PASS  decode  neghist_sm89_v7  nvdisasm exit 0
+PASS  regs  neghist_sm89_v7  REG 16, highest register R9, want at least 12
+PASS  sb  neghist_sm89_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  neghist_sm89_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+FAIL  tkinfo  neghist_sm89_v8  .note.nv.tkinfo sections: 0
+PASS  decode  neghist_sm89_v8  nvdisasm exit 0
+PASS  regs  neghist_sm89_v8  REG 16, highest register R9, want at least 12
+PASS  sb  neghist_sm89_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecadd_sm89_v8dNoTk  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+FAIL  tkinfo  vecadd_sm89_v8dNoTk  .note.nv.tkinfo sections: 0
+PASS  decode  vecadd_sm89_v8dNoTk  nvdisasm exit 0
+PASS  regs  vecadd_sm89_v8dNoTk  REG 12, highest register R9, want at least 12
+PASS  sb  vecadd_sm89_v8dNoTk  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecadd_sm89_v8old  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+FAIL  tkinfo  vecadd_sm89_v8old  .note.nv.tkinfo sections: 0
+PASS  decode  vecadd_sm89_v8old  nvdisasm exit 0
+PASS  regs  vecadd_sm89_v8old  REG 16, highest register R9, want at least 12
+PASS  sb  vecadd_sm89_v8old  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecaddhist_sm80_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x500550, want 0x33 7 0x500550
+PASS  tkinfo  vecaddhist_sm80_v7  .note.nv.tkinfo sections: 0
+PASS  decode  vecaddhist_sm80_v7  nvdisasm exit 0
+PASS  regs  vecaddhist_sm80_v7  REG 16, highest register R9, want at least 12
+PASS  sb  vecaddhist_sm80_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecaddhist_sm80_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005004, want 0x41 8 0x6005004
+FAIL  tkinfo  vecaddhist_sm80_v8  .note.nv.tkinfo sections: 0
+PASS  decode  vecaddhist_sm80_v8  nvdisasm exit 0
+PASS  regs  vecaddhist_sm80_v8  REG 16, highest register R9, want at least 12
+PASS  sb  vecaddhist_sm80_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecaddhist_sm86_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x560556, want 0x33 7 0x560556
+PASS  tkinfo  vecaddhist_sm86_v7  .note.nv.tkinfo sections: 0
+PASS  decode  vecaddhist_sm86_v7  nvdisasm exit 0
+PASS  regs  vecaddhist_sm86_v7  REG 16, highest register R9, want at least 12
+PASS  sb  vecaddhist_sm86_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecaddhist_sm86_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005604, want 0x41 8 0x6005604
+FAIL  tkinfo  vecaddhist_sm86_v8  .note.nv.tkinfo sections: 0
+PASS  decode  vecaddhist_sm86_v8  nvdisasm exit 0
+PASS  regs  vecaddhist_sm86_v8  REG 16, highest register R9, want at least 12
+PASS  sb  vecaddhist_sm86_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecaddhist_sm89_v7  OSABI 0x33 ABIVERSION 7 e_flags 0x590559, want 0x33 7 0x590559
+PASS  tkinfo  vecaddhist_sm89_v7  .note.nv.tkinfo sections: 0
+PASS  decode  vecaddhist_sm89_v7  nvdisasm exit 0
+PASS  regs  vecaddhist_sm89_v7  REG 16, highest register R9, want at least 12
+PASS  sb  vecaddhist_sm89_v7  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+PASS  hdr  vecaddhist_sm89_v8  OSABI 0x41 ABIVERSION 8 e_flags 0x6005904, want 0x41 8 0x6005904
+FAIL  tkinfo  vecaddhist_sm89_v8  .note.nv.tkinfo sections: 0
+PASS  decode  vecaddhist_sm89_v8  nvdisasm exit 0
+PASS  regs  vecaddhist_sm89_v8  REG 16, highest register R9, want at least 12
+PASS  sb  vecaddhist_sm89_v8  20 instructions, shortest set-to-wait 2 cycles, 0 shorter than 2
+exit 1
