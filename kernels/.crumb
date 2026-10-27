@@ -3,14 +3,14 @@
     "generated": {
       "children": [],
       "children_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "compiled_at": "2026-10-27T08:13:31Z",
+      "compiled_at": "2026-10-27T08:13:45Z",
       "compiler": "crumb-compile/1",
-      "digest": "sha256:71fbdee0d9edf423514e31ae369794db46597a939973e8d20910ccfae735e0f0",
+      "digest": "sha256:bf763e540e64a5d742aa9362d151b4ec08e0ca89cc8f7a0c1b4bf97d3a350d76",
       "evidence_files": 0,
       "evidence_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "files": 11,
-      "generated_at_commit": "be6e65acafa9f75e705a308100bc5ddec8bfaa66",
-      "source_tree": "sha256:db7d2f9eaf031c2d673f6317bee1edbaac3428b788349e2c9d1cf2ee357d0220"
+      "files": 15,
+      "generated_at_commit": "8d4ed3680a7a77368fb9606fcefe0d9815e9b2d6",
+      "source_tree": "sha256:337d5e2da4fb25f3bdc8bf3e0fc8afe99524a0f708afcab49e77c219cb51cb9f"
     }
   },
   "name": "kernels",

@@ -3,8 +3,8 @@
     "generated": {
       "children": [
         {
-          "digest": "71fbdee0d9edf423514e31ae369794db46597a939973e8d20910ccfae735e0f0",
-          "last_commit": "400ded3",
+          "digest": "bf763e540e64a5d742aa9362d151b4ec08e0ca89cc8f7a0c1b4bf97d3a350d76",
+          "last_commit": "8d4ed36",
           "name": "kernels",
           "purpose": "six Omega-encoded v7 cubins (vecadd/neg for sm_80/86/89), their sources and the byte-for-byte re"
         },
@@ -27,15 +27,15 @@
           "purpose": "receipt schema, validator, PR gate, board builder, one-off CloudKernels import"
         }
       ],
-      "children_root": "sha256:f56220cfd343cefb6c7566dd30361a36dbe2328c9cbc596cb6b4fb8bbc1a3660",
-      "compiled_at": "2026-10-27T08:13:31Z",
+      "children_root": "sha256:f572afda5f4b6ffb716df17aec24f6ce31693a59d6ec3637cb531dde96b191d9",
+      "compiled_at": "2026-10-27T08:13:45Z",
       "compiler": "crumb-compile/1",
-      "digest": "sha256:7b98da2584eb4ef7cf6597e6e3504fabb14a3010fe8832d530ff170ec046f48b",
-      "evidence_files": 16,
-      "evidence_root": "sha256:2ca05055761936745894bcf785980f7eab0a2c0edf5d40a7067d653b0e9f5d63",
-      "files": 49,
-      "generated_at_commit": "be6e65acafa9f75e705a308100bc5ddec8bfaa66",
-      "source_tree": "sha256:727346737d8f214fff14debfb89d13d1ea2f3bb3992b1e56bb426b41758e4929"
+      "digest": "sha256:11aad4987a673f1c0df00ff54a94bb235c6ab670e7a5af0efb75134e4e0e525e",
+      "evidence_files": 18,
+      "evidence_root": "sha256:ad860af1d427e08dc17e8bc84e2d2ca74f6e653a8444ec28b4baaf31de37fcda",
+      "files": 55,
+      "generated_at_commit": "8d4ed3680a7a77368fb9606fcefe0d9815e9b2d6",
+      "source_tree": "sha256:1cf76b49a4cf45db105d3b40cf3d873aeedbbbf426bbdd3b21137883c2129014"
     }
   },
   "name": "omega-gpu-bench",
