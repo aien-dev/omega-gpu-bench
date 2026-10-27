@@ -9,23 +9,32 @@ git clone https://github.com/aien-dev/omega-gpu-bench && cd omega-gpu-bench && .
 ```
 
 You need Linux, an NVIDIA driver (`libcuda.so.1`), Python 3.8 or newer, and git. No CUDA toolkit, no
-compiler, no `pip install`, no root. It takes under a minute and writes one JSON receipt under `receipts/`.
+compiler, no `pip install`, no root.
+
+## Kernels withdrawn
+
+The six v7 cubins (vecadd and neg for sm_80, sm_86 and sm_89) and the cubin writer that produced them
+(`kernels/src/cubin.om`, driven by `kernels/src/build.sh`) were **removed pending clean-room rewrite
+(CudaLicenseRisk Q6)**. Until a cubin writer built only from public sources lands, `./run` reports
+`NOT_RUN` on every GPU with that reason, touches no GPU and writes no receipt. The removed files remain
+in this repository's git history; purging them from history is a separate decision that has not been
+made. Their hashes are kept in `kernels/WITHDRAWN.sha256` (see "The seed rows").
 
 ## What runs where
 
 | Piece | What it is |
 | --- | --- |
-| Kernels (`kernels/*.cubin`) | SASS for sm_80/86/89, assembled by Omega's `asm2` from the hand-written listings in `kernels/src/` and wrapped into a cubin by `kernels/src/cubin.om`, compiled by Omega's seed compiler. CI rebuilds all six from source and checks the bytes. |
+| Kernels (`kernels/*.cubin`) | None at present (see "Kernels withdrawn"). The SASS listings `kernels/src/*.cuda.s2` for Omega's `asm2` remain; the cubin writer is to be rewritten from public sources. |
 | Path to the GPU | **NVIDIA's own driver library**, libcuda (`cuModuleLoadData`, `cuLaunchKernel`). This kit uses it as an interop oracle for Omega's encoder and cubin writer. It is not CUDA++'s own user-space driver path. |
 | Kit (`./run`, `kit/*.py`) | Interim Python glue that loads the cubins through ctypes, checks the output and writes the receipt. Its Omega successor is listed in [DEPENDENCIES.md](DEPENDENCIES.md). |
 | Receipts | Self-reported. CI checks everything it can from public inputs (below), but it cannot re-run your GPU. |
 
-The kit runs every kernel your card can load: an sm_89 card (RTX 40, L4, L40) runs the sm_89, sm_86 and
-sm_80 builds, an sm_86 card (RTX 30, A10, A40) runs sm_86 and sm_80, an sm_80 card (A100, A30) runs sm_80. Other
-architectures (Hopper, Blackwell, Turing and older) get a receipt that says `not_run`: this kit has no
-kernel for them yet.
+When the kit ships kernels, it runs every kernel your card can load: an sm_89 card (RTX 40, L4, L40)
+runs the sm_89, sm_86 and sm_80 builds, an sm_86 card (RTX 30, A10, A40) runs sm_86 and sm_80, an sm_80
+card (A100, A30) runs sm_80. Other architectures get a receipt that says `not_run`: this kit has no kernel
+for them yet.
 
-Each GPU runs two kernels per architecture:
+Each GPU runs two kernels per architecture (this is what the withdrawn kernels did):
 
 - **vecadd**: `c[i] = a[i] + b[i]` on 2^20 + 7 32-bit words from a fixed seed; every word is compared.
   Then it is timed on 2^26 words: median of 5 rounds of 20 launches, timed with CUDA events,
@@ -51,6 +60,7 @@ GPU is (default `self-hosted`; e.g. `--provider "vast"` for a rented card).
 - it was edited after `./run` wrote it (the `receipt_sha256` covers every field);
 - a kernel hash differs from `kernels/SHA256SUMS` at the kit commit named in the receipt, that commit is
   not on `main`, or the kit had local changes;
+- it is a kit run of a withdrawn kernel (a hash in `kernels/WITHDRAWN.sha256`), from any kit commit;
 - it leaves out a kernel the GPU can load, or lists one it cannot;
 - a count is not 2^20 + 7, or a verdict disagrees with its mismatch count;
 - any reported reference value differs from the one recomputed from the public seed, or a "wrong"
@@ -60,8 +70,10 @@ GPU is (default `self-hosted`; e.g. `--provider "vast"` for a rented card).
 - it was made with the test fixture driver.
 
 `tools/pr_gate.py` (run from `main`, never from the pull request) also keeps receipts append-only and
-checks the sign-off. `tests/run.sh` proves each of these rules can fail: it runs the kit against a fake
-driver, tampers with the result fourteen ways, and requires every tampered receipt to be rejected.
+checks the sign-off. `tests/run.sh` proves each of these rules can fail: it runs a fixture kit (placeholder
+kernel files, not cubins) against a fake driver, tampers with the result fifteen ways, and requires every
+tampered receipt to be rejected. It also checks that the shipped kit says `NOT_RUN` and that a run made
+with the last kit that shipped the withdrawn kernels is rejected.
 
 ## The seed rows
 
@@ -69,15 +81,14 @@ The first three rows on the board are my own runs on GPUs rented from vast throu
 2026-10-26, before this kit existed: an RTX 4090, an A100 PCIe 40GB and an RTX 3090. They went through
 the same libcuda path with the same cubins (`origin: cloudkernels-import`, allowlisted in
 `receipts/imports.sha256`, raw output in `evidence/cloudkernels/`). That harness did not hash the output
-or time the kernel, so those rows say "not timed".
+or time the kernel, so those rows say "not timed". They are kept unchanged as historical records. The
+kernels they hash were withdrawn pending a clean-room rewrite (see "Kernels withdrawn"); the validator
+checks imported rows against `kernels/WITHDRAWN.sha256`, and no new run of those kernels is accepted.
 
-## Rebuild the kernels
+## Rebuilding the kernels
 
-```sh
-git clone https://github.com/aien-dev/omega-mv ../omega-mv
-git -C ../omega-mv fetch origin 7ca3f989cbd62e77de1dd7d23919edd083fd2113 && git -C ../omega-mv checkout FETCH_HEAD
-kernels/src/build.sh ../omega-mv     # aarch64 Linux; prints PASS when all six match
-```
+NOT_RUN: the cubin writer and its build script were withdrawn (see "Kernels withdrawn"), so there is
+nothing to rebuild until the clean-room rewrite lands.
 
 ## Tests
 

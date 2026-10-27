@@ -3,39 +3,39 @@
     "generated": {
       "children": [
         {
-          "digest": "4b47ab98285a3fe89acf7a5caee2a2e841fdfb55d3f7d7251590ff561f701da1",
-          "last_commit": "400ded3",
+          "digest": "745818f0cbdfde4a96acf0590e8dd96b5e2baa6584527b1f9e1c0ff9879b2627",
+          "last_commit": "6e5f2de",
           "name": "kernels",
-          "purpose": "six Omega-encoded v7 cubins (vecadd/neg for sm_80/86/89), their sources and the byte-for-byte re"
+          "purpose": "no kernels shipped: v7 cubins and writer withdrawn pending clean-room rewrite (CudaLicenseRisk Q"
         },
         {
-          "digest": "8e3ac951b50701b6f674f27c168b08a33f1f1f12332835afb81dbd79e97caa29",
-          "last_commit": "d6c2697",
+          "digest": "fe45089d3a1075b074ba80dee4059bc4205e3e2ba8111760695ade784b115b25",
+          "last_commit": "6e5f2de",
           "name": "kit",
           "purpose": "interim Python kit: ./run drives bench.py, ck.py calls libcuda through ctypes"
         },
         {
-          "digest": "2645b7c453bec965fe5b4ebd4a76cc3b885b24458eb9fe3b9cbc0e1a744adc34",
-          "last_commit": "88e4a40",
+          "digest": "1c75cc3a4d151bb752f5de0d7b4a985962e3bb109aa3c2262d013f666ea23e59",
+          "last_commit": "6e5f2de",
           "name": "tests",
           "purpose": "no-GPU tests: fake libcuda fixture, tamper negative controls, committed tampered example"
         },
         {
-          "digest": "df6e2ef83ee864ae89e95b604f848c33be21e93bc42de0b1de487bc34cf5afe4",
-          "last_commit": "88e4a40",
+          "digest": "6888c3f667e5746854daaffcf4737bfb2a33bae0efbfbffe47f74252e14b6aa4",
+          "last_commit": "6e5f2de",
           "name": "tools",
           "purpose": "receipt schema, validator, PR gate, board builder, one-off CloudKernels import"
         }
       ],
-      "children_root": "sha256:204922b59c04ee99d300738bdc821766a9756b39e068126cb77f9e5383963693",
-      "compiled_at": "2026-10-27T00:43:21Z",
+      "children_root": "sha256:a0d5a9fcf8c83d9d1971206a616f94fe82e266c335524a12dad0a52733da3da6",
+      "compiled_at": "2026-10-27T11:55:45Z",
       "compiler": "crumb-compile/1",
-      "digest": "sha256:c1f9f12171298d1c1af413484a1c3de558050958953e6aede3ca6c11539272ed",
+      "digest": "sha256:484850159a71193ab37bc4a9907830c4cf6341dd11eef40064e06208a60763de",
       "evidence_files": 16,
       "evidence_root": "sha256:2ca05055761936745894bcf785980f7eab0a2c0edf5d40a7067d653b0e9f5d63",
-      "files": 49,
-      "generated_at_commit": "d6c269716e53b64343f4973f1a98328d5dc289af",
-      "source_tree": "sha256:bb3c6d2485641dc558cff08aec8b7e5b7f3d853f867864a39746e69e01273bb6"
+      "files": 42,
+      "generated_at_commit": "6e5f2de84c1701493e07bf4e621cc1863d5ae5aa",
+      "source_tree": "sha256:e97d7beb3d2f655bb788c0b6219cdc3c5ebd963991db200a82db4282f2105dc2"
     }
   },
   "name": "omega-gpu-bench",

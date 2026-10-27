@@ -3,15 +3,12 @@
 Everything this repository needs that is not Omega, with its exact version, what it does here, and what
 replaces it.
 
-## Build path (CI, `kernels/src/build.sh`)
+## Build path
 
-| Dependency | Pin | What it does | Omega replacement |
-| --- | --- | --- | --- |
-| aien-dev/omega-mv `seed/out/omc` | commit 7ca3f989, sha256 `2c824805…029f` | compiles `cubin.om` | first-party (Omega's seed compiler) |
-| aien-dev/omega-mv `seed/rung2/asm2.bin` | sha256 `6988abe0…69c4` | assembles the `.cuda.s2` listings | first-party |
-| aien-dev/omega-mv `seed/sm80/sm80.tbl` | sha256 `c77a731d…670f` | Ampere/Ada encoding table (checked against Mesa NAK in omega-mv PR 836) | first-party |
-| `kernels/src/cubin.om`, `vecadd.cuda.s2` | sha256 `8f2c7f5d…89e9`, `f8cb69e0…504a` | cubin writer and kernel listing, vendored until omega-mv PR 836's successor commits them | first-party; moves to omega-mv |
-| POSIX sh, coreutils, git (GitHub `ubuntu-24.04-arm` image) | runner image | runs the build steps and hashes | host tools, coordination only |
+None at present. The cubin writer (`kernels/src/cubin.om`), its build script and the CI rebuild job were
+removed pending clean-room rewrite (CudaLicenseRisk Q6); see README.md, "Kernels withdrawn". The rewrite
+brings its own build-path rows. The kept listings `kernels/src/vecadd.cuda.s2` and `neg.cuda.s2` are input
+for Omega's `asm2` (aien-dev/omega-mv `seed/rung2/asm2.bin`, first-party), not run by anything here now.
 
 ## Run path (`./run` on the developer's machine)
 

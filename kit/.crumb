@@ -3,14 +3,14 @@
     "generated": {
       "children": [],
       "children_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "compiled_at": "2026-10-27T00:43:21Z",
+      "compiled_at": "2026-10-27T11:55:45Z",
       "compiler": "crumb-compile/1",
-      "digest": "sha256:8e3ac951b50701b6f674f27c168b08a33f1f1f12332835afb81dbd79e97caa29",
+      "digest": "sha256:fe45089d3a1075b074ba80dee4059bc4205e3e2ba8111760695ade784b115b25",
       "evidence_files": 0,
       "evidence_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "files": 2,
-      "generated_at_commit": "d6c269716e53b64343f4973f1a98328d5dc289af",
-      "source_tree": "sha256:ac956594a438a1009b8d560e4627727e78d50592193c5f1a8bd36505ec3f7299"
+      "generated_at_commit": "6e5f2de84c1701493e07bf4e621cc1863d5ae5aa",
+      "source_tree": "sha256:c04368eec0b75c51816fb630045ba92068f6502fa37d703874e42d909ac1dfc7"
     }
   },
   "name": "kit",
