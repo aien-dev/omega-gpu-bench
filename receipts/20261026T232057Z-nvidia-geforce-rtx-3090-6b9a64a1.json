@@ -1,0 +1,150 @@
+{
+ "evidence": {
+  "files": [
+   {
+    "path": "evidence/cloudkernels/RTX_3090-231552/driver-version.txt",
+    "sha256": "9f350e333e9684ff0fab554a75cf82c2cd12be46efb95f4003fc0461f5ce6051"
+   },
+   {
+    "path": "evidence/cloudkernels/RTX_3090-231552/nvidia-smi.txt",
+    "sha256": "c79b06912dbca6ccf1e390d0c3acffc9fcf9f8fcfb7f0b965837bfe20155dd78"
+   },
+   {
+    "path": "evidence/cloudkernels/RTX_3090-231552/rental.txt",
+    "sha256": "b6cd3566f3f5a3986a5c1198806c7d6fb8cbce861db6c901c3eb67d8d8fbe64c"
+   },
+   {
+    "path": "evidence/cloudkernels/RTX_3090-231552/results.jsonl",
+    "sha256": "1833a6c16e553da7a5ec1299b0a8983e67a4e443adfd2924eea76fffeae6fa63"
+   }
+  ],
+  "note": "Kit kernels only; alu/ctl rows of the same run are in results.jsonl. No output hash or kernel timing was recorded by that harness.",
+  "source": "CloudKernels rental run RTX_3090-231552 (aien-dev, 2026-10-26), harness ck.py, through NVIDIA libcuda"
+ },
+ "kit": {
+  "commit": null,
+  "kernels_sha256sums": null,
+  "modified": false,
+  "repo": null
+ },
+ "machine": {
+  "arch": "x86_64",
+  "cc": "8.6",
+  "cpu": "Intel(R) Xeon(R) CPU E5-2696 v3 @ 2.30GHz",
+  "cuda_driver_api": 13000,
+  "driver_version": "580.159.03",
+  "gpu": "NVIDIA GeForce RTX 3090",
+  "kernel": "5.15.0-179-generic",
+  "nvrm": "NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  580.159.03  Release Build  (dvs-builder@U22-I3-AM27-29-6)  Fri Apr 24 06:03:03 UTC 2026",
+  "os": "Ubuntu 24.04.3 LTS"
+ },
+ "not_run": null,
+ "origin": "cloudkernels-import",
+ "path": "NVIDIA libcuda (cuModuleLoadData + cuLaunchKernel): an interop oracle for Omega's machine-code encoder and cubin writer, not CUDA++'s own user-space driver path",
+ "provider": "vast (rented through OpenResearch)",
+ "receipt_sha256": "6b9a64a187d55bc56e64464b636592a630925c7ce0f6fb871084c18d5870d21b",
+ "results": [
+  {
+   "checked": 1048583,
+   "cubin": "neg_sm80_v7.cubin",
+   "cubin_sha256": "c99156d05d69eacb5aed13c9c2059dd31dc7e66005c654f0048c23e6e81c7418",
+   "error": null,
+   "first_bad": [
+    [
+     0,
+     3314336854,
+     1339800579
+    ],
+    [
+     1,
+     1967621693,
+     1085748091
+    ],
+    [
+     2,
+     3804589256,
+     1698942161
+    ]
+   ],
+   "gbps": null,
+   "kernel_ms": null,
+   "kind": "neg",
+   "mismatches": 1048583,
+   "output_sha256": null,
+   "timing_error": null,
+   "timing_n": null,
+   "verdict": "NEG_DETECTED"
+  },
+  {
+   "checked": 1048583,
+   "cubin": "neg_sm86_v7.cubin",
+   "cubin_sha256": "9a39a29a77b354f218fbb49942ba72171aaadc6cd36de13f1c096e40de9e6a58",
+   "error": null,
+   "first_bad": [
+    [
+     0,
+     1837941846,
+     1339800579
+    ],
+    [
+     1,
+     491226685,
+     1085748091
+    ],
+    [
+     2,
+     2328194248,
+     1698942161
+    ]
+   ],
+   "gbps": null,
+   "kernel_ms": null,
+   "kind": "neg",
+   "mismatches": 1048583,
+   "output_sha256": null,
+   "timing_error": null,
+   "timing_n": null,
+   "verdict": "NEG_DETECTED"
+  },
+  {
+   "checked": 1048583,
+   "cubin": "vecadd_sm80_v7.cubin",
+   "cubin_sha256": "b9fe4b043e9c3adc2d5552d82fb924122b4dbfdca6d4d684f08cfd6670f3cd6e",
+   "error": null,
+   "first_bad": [],
+   "gbps": null,
+   "kernel_ms": null,
+   "kind": "vecadd",
+   "mismatches": 0,
+   "output_sha256": null,
+   "timing_error": null,
+   "timing_n": null,
+   "verdict": "PASS"
+  },
+  {
+   "checked": 1048583,
+   "cubin": "vecadd_sm86_v7.cubin",
+   "cubin_sha256": "2e166ba0b1ec2918521830d65f92a1badfb8c3601e396c4f6b4a1bc6d4044549",
+   "error": null,
+   "first_bad": [],
+   "gbps": null,
+   "kernel_ms": null,
+   "kind": "vecadd",
+   "mismatches": 0,
+   "output_sha256": null,
+   "timing_error": null,
+   "timing_n": null,
+   "verdict": "PASS"
+  }
+ ],
+ "run": {
+  "driver": "libcuda",
+  "python": null,
+  "utc": "2026-10-26T23:20:57Z"
+ },
+ "schema": "omega-gpu-bench/receipt/v1",
+ "submitter": {
+  "signed_off_by": "Aien agents, CloudKernels import <aien@aienos.com>",
+  "statement": "Imported from aien-dev's own CloudKernels run RTX_3090-231552; not run with this kit."
+ }
+}

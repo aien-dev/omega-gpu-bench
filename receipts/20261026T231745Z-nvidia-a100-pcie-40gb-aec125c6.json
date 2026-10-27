@@ -1,0 +1,104 @@
+{
+ "evidence": {
+  "files": [
+   {
+    "path": "evidence/cloudkernels/A100_PCIE_40GB-231428/driver-version.txt",
+    "sha256": "f5c6938bfe815dca5a8f046823b95433559135bf5f5ec240a9cd6e3bd0551251"
+   },
+   {
+    "path": "evidence/cloudkernels/A100_PCIE_40GB-231428/nvidia-smi.txt",
+    "sha256": "bf364458bde9429527f09f04eac65a2ba42dc6ea19b5c920e3440489a419c648"
+   },
+   {
+    "path": "evidence/cloudkernels/A100_PCIE_40GB-231428/rental.txt",
+    "sha256": "cab30af5bd7f17210f780f7bcc1a726b341513c0f5a5a10324d72e1bcbc3fe82"
+   },
+   {
+    "path": "evidence/cloudkernels/A100_PCIE_40GB-231428/results.jsonl",
+    "sha256": "baddc9847ab6eec2ec598a18ffff931b78c9caac164faa6f942982f4a665f958"
+   }
+  ],
+  "note": "Kit kernels only; alu/ctl rows of the same run are in results.jsonl. No output hash or kernel timing was recorded by that harness.",
+  "source": "CloudKernels rental run A100_PCIE_40GB-231428 (aien-dev, 2026-10-26), harness ck.py, through NVIDIA libcuda"
+ },
+ "kit": {
+  "commit": null,
+  "kernels_sha256sums": null,
+  "modified": false,
+  "repo": null
+ },
+ "machine": {
+  "arch": "x86_64",
+  "cc": "8.0",
+  "cpu": "AMD Ryzen Threadripper 3970X 32-Core Processor",
+  "cuda_driver_api": 12080,
+  "driver_version": "570.211.01",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "kernel": "6.8.0-106-generic",
+  "nvrm": "NVRM version: NVIDIA UNIX Open Kernel Module for x86_64  570.211.01  Release Build  (dvs-builder@U22-I3-AM27-29-5)  Tue Nov 25 16:23:07 UTC 2025",
+  "os": "Ubuntu 24.04.3 LTS"
+ },
+ "not_run": null,
+ "origin": "cloudkernels-import",
+ "path": "NVIDIA libcuda (cuModuleLoadData + cuLaunchKernel): an interop oracle for Omega's machine-code encoder and cubin writer, not CUDA++'s own user-space driver path",
+ "provider": "vast (rented through OpenResearch)",
+ "receipt_sha256": "aec125c67f2dd68e781a928a5b01a82590d7bb052f625bb5cf73d35c1c5f94fb",
+ "results": [
+  {
+   "checked": 1048583,
+   "cubin": "neg_sm80_v7.cubin",
+   "cubin_sha256": "c99156d05d69eacb5aed13c9c2059dd31dc7e66005c654f0048c23e6e81c7418",
+   "error": null,
+   "first_bad": [
+    [
+     0,
+     1787610198,
+     1339800579
+    ],
+    [
+     1,
+     440895037,
+     1085748091
+    ],
+    [
+     2,
+     2277862600,
+     1698942161
+    ]
+   ],
+   "gbps": null,
+   "kernel_ms": null,
+   "kind": "neg",
+   "mismatches": 1048583,
+   "output_sha256": null,
+   "timing_error": null,
+   "timing_n": null,
+   "verdict": "NEG_DETECTED"
+  },
+  {
+   "checked": 1048583,
+   "cubin": "vecadd_sm80_v7.cubin",
+   "cubin_sha256": "b9fe4b043e9c3adc2d5552d82fb924122b4dbfdca6d4d684f08cfd6670f3cd6e",
+   "error": null,
+   "first_bad": [],
+   "gbps": null,
+   "kernel_ms": null,
+   "kind": "vecadd",
+   "mismatches": 0,
+   "output_sha256": null,
+   "timing_error": null,
+   "timing_n": null,
+   "verdict": "PASS"
+  }
+ ],
+ "run": {
+  "driver": "libcuda",
+  "python": null,
+  "utc": "2026-10-26T23:17:45Z"
+ },
+ "schema": "omega-gpu-bench/receipt/v1",
+ "submitter": {
+  "signed_off_by": "Aien agents, CloudKernels import <aien@aienos.com>",
+  "statement": "Imported from aien-dev's own CloudKernels run A100_PCIE_40GB-231428; not run with this kit."
+ }
+}
