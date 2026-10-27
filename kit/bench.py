@@ -100,7 +100,8 @@ def main():
         print("  %-22s " % name, end="", flush=True)
         row = ck(os.path.join(KIT, "kernels", name), kind)
         row = R.result_row(name, sums[name], kind, row)
-        print(row["verdict"] + ("  %d/%d words checked" % (row["checked"] - row["mismatches"], row["checked"])
+        print(row["verdict"] + ("  %d of %d words differ from the CPU reference%s" % (
+            row["mismatches"], row["checked"], " (the negative control must differ)" if kind == "neg" else "")
                                 if row["checked"] else "  " + (row["error"] or ""))
               + ("  %.3f ms, %.1f GB/s" % (row["kernel_ms"], row["gbps"]) if row["gbps"] else ""))
         results.append(row)

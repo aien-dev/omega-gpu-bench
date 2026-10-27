@@ -9,33 +9,33 @@
           "purpose": "six Omega-encoded v7 cubins (vecadd/neg for sm_80/86/89), their sources and the byte-for-byte re"
         },
         {
-          "digest": "baa307cac10f88aa17bb42c566408950264df0f4ada1abef8043c34f6daef165",
-          "last_commit": "400ded3",
+          "digest": "8e3ac951b50701b6f674f27c168b08a33f1f1f12332835afb81dbd79e97caa29",
+          "last_commit": "d6c2697",
           "name": "kit",
           "purpose": "interim Python kit: ./run drives bench.py, ck.py calls libcuda through ctypes"
         },
         {
           "digest": "2645b7c453bec965fe5b4ebd4a76cc3b885b24458eb9fe3b9cbc0e1a744adc34",
-          "last_commit": "1168ea7",
+          "last_commit": "88e4a40",
           "name": "tests",
           "purpose": "no-GPU tests: fake libcuda fixture, tamper negative controls, committed tampered example"
         },
         {
           "digest": "df6e2ef83ee864ae89e95b604f848c33be21e93bc42de0b1de487bc34cf5afe4",
-          "last_commit": "400ded3",
+          "last_commit": "88e4a40",
           "name": "tools",
           "purpose": "receipt schema, validator, PR gate, board builder, one-off CloudKernels import"
         }
       ],
-      "children_root": "sha256:de86f276e9cbfe1fc34df8351437f590914b697a942862da00f92de6b166f792",
-      "compiled_at": "2026-10-27T00:34:29Z",
+      "children_root": "sha256:204922b59c04ee99d300738bdc821766a9756b39e068126cb77f9e5383963693",
+      "compiled_at": "2026-10-27T00:43:21Z",
       "compiler": "crumb-compile/1",
-      "digest": "sha256:2e7036766cc5627233325fbee020abd23f942b57af5e6dcea93d3c14a01dbe97",
-      "evidence_files": 0,
-      "evidence_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "files": 33,
-      "generated_at_commit": "6cff107d5033bdac5591928ccd50c9d3276708a3",
-      "source_tree": "sha256:db6dd1a19f0092362a76eadc1504d6836e061d9cfe7d433905e30d64b94e9062"
+      "digest": "sha256:c1f9f12171298d1c1af413484a1c3de558050958953e6aede3ca6c11539272ed",
+      "evidence_files": 16,
+      "evidence_root": "sha256:2ca05055761936745894bcf785980f7eab0a2c0edf5d40a7067d653b0e9f5d63",
+      "files": 49,
+      "generated_at_commit": "d6c269716e53b64343f4973f1a98328d5dc289af",
+      "source_tree": "sha256:bb3c6d2485641dc558cff08aec8b7e5b7f3d853f867864a39746e69e01273bb6"
     }
   },
   "name": "omega-gpu-bench",
