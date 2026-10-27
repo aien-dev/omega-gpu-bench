@@ -1,0 +1,32 @@
+# receipts: the gate for a pull request that submits receipts. pull_request_target runs this file and
+# tools/ from the base branch; the pull request is checked out as data and none of it is executed.
+name: receipts
+on:
+  pull_request_target:
+permissions:
+  contents: read
+jobs:
+  gate:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+    steps:
+      - name: trusted tools from the base branch
+        uses: actions/checkout@v4
+        with: {path: base, persist-credentials: false}
+      - name: the pull request, as data
+        uses: actions/checkout@v4
+        with:
+          path: pr
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: tools/pr_gate.py (append-only, base validator, sign-off)
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+          ASSOC: ${{ github.event.pull_request.author_association }}
+          REPO: ${{ github.repository }}
+        run: |
+          git -C pr fetch --quiet "https://github.com/$REPO" "$BASE"
+          python3 base/tools/pr_gate.py --pr pr --base "$BASE" --head "$HEAD" --assoc "$ASSOC"

@@ -1,0 +1,647 @@
+note cubin.om -- wraps asm2 machine code for one kernel in a cubin, the ELF that NVIDIA's CUDA
+note driver loads with cuModuleLoadData. It follows the CUDA kernel-parameter ABI, not CUDA++'s:
+note parameters sit in constant bank 0 from byte 352 (sm_8x), 528 (sm_90) or 896 (sm_120).
+note The layout was read from nvcc 13.0 and CUDA 12.8 cubins with readelf and cuobjdump -elf
+note (field values only, no bytes copied) and from CUDApp src/omega_cubin.c (sm_121):
+note   1 .shstrtab 2 .strtab 3 .symtab 4 .nv.info 5 .nv.callgraph 6 .note.nv.cuinfo
+note   7 .text.NAME 8 .nv.constant0.NAME 9 .nv.info.NAME, and from sm_90 on also
+note   10 .nv.compat 11 .nv.shared.reserved.0; then the section headers, then the program
+note   headers (PHDR, LOAD of the header table, LOAD text, [LOAD shared,] LOAD constant bank).
+note symbols: 1 section .text, 2 section .nv.constant0, 3 the kernel (global function).
+note usage: cubin SM ABI API REGS NAME SIG < code.bin > kernel.cubin
+note   SM    80 86 87 89 90 or 120
+note   ABI   8 (CUDA 13 style: OS/ABI 0x41, e_flags 0x6000000 | SM << 8 | 4, or | 2 from sm_100)
+note         or 7 (CUDA 12 style: OS/ABI 0x33, e_flags SM << 16 | 0x500 | SM; below sm_100 only)
+note   API   the EIATTR_CUDA_API_VERSION number (130 = CUDA 13.0, 128 = CUDA 12.8)
+note   REGS  registers per thread (1..255)
+note   NAME  kernel symbol, 1..32 bytes of [A-Za-z0-9_]
+note   SIG   one letter per parameter in order: p = 8-byte pointer, u = 4-byte integer (1..16)
+note stdin: the instruction bytes, a whole number of 16-byte instructions, below 65536 bytes,
+note with at least one EXIT (its offsets go into EIATTR_EXIT_INSTR_OFFSETS).
+note exit 0 written; 1 usage; 2 bad number; 3 bad name or signature; 4 bad input; 5 write failed.
+
+text tsn ".shstrtab|.strtab|.symtab|.nv.info|.nv.callgraph|.note.nv.cuinfo|.text.|.nv.constant0.|.nv.info.|.nv.compat|.nv.shared.reserved.0|"
+text tnv "NVIDIA Corp"
+
+global ob uchar 262144
+global tx uchar 65536
+global ab uchar 64
+global nm uchar 32
+global sg uchar 16
+global v ulong 32
+global sty ulong 16
+global sfl ulong 16
+global slk ulong 16
+global sin ulong 16
+global sal ulong 16
+global ses ulong 16
+global sof ulong 16
+global ssz ulong 16
+global snm ulong 16
+global po ulong 16
+global ps ulong 16
+
+note v slots
+const VSM ulong 0
+const VABI ulong 1
+const VAPI ulong 2
+const VREG ulong 3
+const VNML ulong 4
+const VSGL ulong 5
+const VTL ulong 6
+const VPSZ ulong 7
+const VNS ulong 8
+const VSHO ulong 9
+const VPHO ulong 10
+const VEND ulong 11
+const VPB ulong 12
+const VNEW ulong 13
+const VNPH ulong 14
+const VRES ulong 15
+
+fn b1 o ulong x ulong to void
+put ob o uchar and x 255
+end
+
+fn b2 o ulong x ulong to void
+b1 o x
+b1 add o 1 shr x 8
+end
+
+fn b4 o ulong x ulong to void
+b2 o x
+b2 add o 2 shr x 16
+end
+
+fn b8 o ulong x ulong to void
+b4 o x
+b4 add o 4 shr x 32
+end
+
+fn al o ulong a ulong to ulong
+ret mul div add o sub a 1 a a
+end
+
+note an EIATTR record: format 4 has a 2-byte payload length, format 3 a 2-byte value
+fn at4 o ulong att ulong n ulong to ulong
+b1 o 4
+b1 add o 1 att
+b2 add o 2 n
+ret add o 4
+end
+
+fn at3 o ulong att ulong x ulong to ulong
+b1 o 3
+b1 add o 1 att
+b2 add o 2 x
+ret add o 4
+end
+
+note decimal argument i, or exit 2
+fn dec i ulong to ulong
+n = argread i ab 0 len ab
+if or lt n 1 gt n 10
+exit 2
+end
+x = ulong 0
+for k ulong ulong n
+c = ulong get ab k
+if or lt c 48 gt c 57
+exit 2
+end
+x = add mul x 10 sub c 48
+end
+ret x
+end
+
+fn nput o ulong to ulong
+n = get v VNML
+for i ulong n
+put ob add o i get nm i
+end
+ret add o n
+end
+
+fn sec k ulong ty ulong fl ulong lk ulong inf ulong to void
+put sty k ty
+put sfl k fl
+put slk k lk
+put sin k inf
+end
+
+fn sec2 k ulong a ulong es ulong to void
+put sal k a
+put ses k es
+end
+
+fn args to void
+sm = dec 1
+abi = dec 2
+api = dec 3
+rg = dec 4
+ok = false
+if or eq sm 80 eq sm 86
+ok = true
+end
+if or eq sm 87 eq sm 89
+ok = true
+end
+if or eq sm 90 eq sm 120
+ok = true
+end
+if not ok
+exit 2
+end
+if and ne abi 7 ne abi 8
+exit 2
+end
+if and eq abi 7 ge sm 100
+exit 2
+end
+if or lt api 1 gt api 1000
+exit 2
+end
+if or lt rg 1 gt rg 255
+exit 2
+end
+put v VSM sm
+put v VABI abi
+put v VAPI api
+put v VREG rg
+pb = ulong 896
+if lt sm 100
+pb = 528
+end
+if lt sm 90
+pb = 352
+end
+put v VPB pb
+put v VNEW 0
+put v VNS 10
+put v VNPH 4
+put v VRES 0
+if ge sm 90
+put v VNEW 1
+put v VNS 12
+put v VNPH 5
+end
+if ge sm 100
+put v VRES 64
+end
+names
+sigs
+end
+
+fn names to void
+n = argread 5 nm 0 len nm
+if lt n 1
+exit 3
+end
+for i ulong ulong n
+c = get nm i
+ok = or and ge c 48 le c 57 eq c 95
+ok = or ok and ge c 65 le c 90
+ok = or ok and ge c 97 le c 122
+if not ok
+exit 3
+end
+end
+put v VNML ulong n
+end
+
+fn sigs to void
+n = argread 6 sg 0 len sg
+if lt n 1
+exit 3
+end
+o = ulong 0
+for j ulong ulong n
+c = get sg j
+z = ulong 0
+if eq c 112
+z = 8
+end
+if eq c 117
+z = 4
+end
+if eq z 0
+exit 3
+end
+o = al o z
+put po j o
+put ps j z
+o = add o z
+end
+put v VSGL ulong n
+put v VPSZ o
+end
+
+fn readin to void
+t = ulong 0
+r = long 1
+while gt r 0
+r = read 0 tx t sub len tx t
+if gt r 0
+t = add t ulong r
+if eq t len tx
+exit 4
+end
+end
+end
+if lt r 0
+exit 4
+end
+if or eq t 0 ne rem t 16 0
+exit 4
+end
+put v VTL t
+end
+
+note the EXIT instructions: the low 12 bits of the first word are 0x94d (2381)
+fn isexit i ulong to bool
+w = or ulong get tx i shl ulong get tx add i 1 8
+ret eq and w 4095 2381
+end
+
+note section name strings at o (the shstrtab); the prefixed names get NAME appended
+fn shname o ulong to ulong
+put ob o 0
+p = add o 1
+j = ulong 1
+st = p
+n = get v VNS
+for i ulong len tsn
+c = get tsn i
+if lt j n
+if eq c 124
+put snm j sub st o
+if and ge j 7 le j 9
+p = nput p
+end
+put ob p 0
+p = add p 1
+st = p
+else
+put ob p c
+p = add p 1
+end
+end
+if eq c 124
+j = add j 1
+end
+end
+ret p
+end
+
+fn strtab o ulong to ulong
+put ob o 0
+p = nput add o 1
+put ob p 0
+ret add p 1
+end
+
+fn symtab o ulong to ulong
+b1 add o 28 3
+b2 add o 30 7
+b1 add o 52 3
+b2 add o 54 8
+b4 add o 72 1
+b1 add o 76 18
+b1 add o 77 16
+b2 add o 78 7
+b8 add o 88 get v VTL
+ret add o 96
+end
+
+fn ginfo o ulong to ulong
+p = at4 o 47 8
+b4 p 3
+b4 add p 4 get v VREG
+p = at4 add p 8 17 8
+b4 p 3
+p = at4 add p 8 18 8
+b4 p 3
+ret add p 8
+end
+
+fn cgraph o ulong to ulong
+b4 add o 4 4294967295
+b4 add o 12 4294967294
+b4 add o 20 4294967293
+b4 add o 28 4294967292
+ret add o 32
+end
+
+fn cuinfo o ulong to ulong
+b4 o 12
+b4 add o 4 8
+b4 add o 8 1000
+for i ulong len tnv
+put ob add add o 12 i get tnv i
+end
+b2 add o 24 2
+b2 add o 26 get v VSM
+b4 add o 28 get v VAPI
+ret add o 32
+end
+
+fn textc o ulong to ulong
+n = get v VTL
+for i ulong n
+put ob add o i get tx i
+end
+ret add o n
+end
+
+note one KPARAM_INFO record for parameter j
+fn kparam o ulong j ulong to ulong
+p = at4 o 23 12
+b2 add p 4 j
+b2 add p 6 get po j
+z = get ps j
+f = ulong 240
+if and ge get v VSM 100 eq z 8
+f = 245
+end
+b1 add p 9 f
+b1 add p 10 add shl z 2 1
+ret add p 12
+end
+
+fn kparams o ulong to ulong
+p = o
+n = get v VSGL
+for i ulong n
+p = kparam p sub sub n i 1
+end
+ret p
+end
+
+fn exits o ulong to ulong
+t = get v VTL
+n = ulong 0
+i = ulong 0
+while lt i t
+if isexit i
+n = add n 1
+end
+i = add i 16
+end
+if eq n 0
+exit 4
+end
+p = at4 o 28 mul n 4
+i = 0
+while lt i t
+if isexit i
+b4 p i
+p = add p 4
+end
+i = add i 16
+end
+ret p
+end
+
+fn cbank o ulong to ulong
+p = at4 o 10 8
+b4 p 2
+b2 add p 4 get v VPB
+b2 add p 6 get v VPSZ
+ret add p 8
+end
+
+fn finfo o ulong to ulong
+p = at4 o 55 4
+b4 p get v VAPI
+p = add p 4
+if eq get v VNEW 0
+b1 p 1
+b1 add p 1 53
+p = cbank add p 4
+p = at3 p 25 get v VPSZ
+p = kparams p
+p = at3 p 27 255
+p = at3 p 95 0
+ret exits p
+end
+p = kparams p
+p = at3 p 80 0
+p = at3 p 27 255
+p = at3 p 95 257
+if ge get v VSM 100
+b1 p 2
+b1 add p 1 74
+p = add p 4
+end
+p = exits p
+p = at3 p 25 get v VPSZ
+p = cbank p
+p = at4 p 54 4
+if eq get v VSM 90
+b4 p 8
+end
+ret add p 4
+end
+
+fn compat o ulong to ulong
+b4 o 2306
+b4 add o 4 66050
+b4 add o 8 328962
+b4 add o 12 16844547
+b4 add o 16 770
+b4 add o 20 67074
+b4 add o 24 527108
+if eq get v VSM 120
+b4 add o 28 80
+end
+ret add o 36
+end
+
+fn wsec k ulong o ulong to ulong
+if eq k 1
+ret shname o
+end
+if eq k 2
+ret strtab o
+end
+if eq k 3
+ret symtab o
+end
+if eq k 4
+ret ginfo o
+end
+if eq k 5
+ret cgraph o
+end
+if eq k 6
+ret cuinfo o
+end
+if eq k 7
+ret textc o
+end
+if eq k 8
+ret add o add get v VPB get v VPSZ
+end
+if eq k 9
+ret finfo o
+end
+if eq k 10
+ret compat o
+end
+ret o
+end
+
+fn table to void
+sec 1 3 0 0 0
+sec2 1 1 0
+sec 2 3 0 0 0
+sec2 2 1 0
+sec 3 2 0 2 3
+sec2 3 8 24
+sec 4 1879048192 0 3 0
+sec2 4 4 0
+sec 5 1879048193 0 3 0
+sec2 5 4 8
+f = ulong 16777216
+if eq get v VNEW 1
+f = 16777280
+end
+sec 6 7 f 0 0
+sec2 6 4 0
+sec 7 1 6 3 or shl get v VREG 24 3
+sec2 7 128 0
+sec 8 1 66 0 7
+sec2 8 4 0
+sec 9 1879048192 64 3 7
+sec2 9 4 0
+sec 10 1879048326 0 0 0
+sec2 10 4 0
+sec 11 8 3 0 0
+sec2 11 1 0
+end
+
+fn build to void
+o = ulong 64
+n = get v VNS
+k = ulong 1
+while lt k n
+o = al o get sal k
+put sof k o
+e = wsec k o
+put ssz k sub e o
+o = e
+k = add k 1
+end
+if eq get v VNEW 1
+put ssz 11 get v VRES
+end
+o = al o 8
+put v VSHO o
+o = add o mul n 64
+put v VPHO o
+put v VEND add o mul get v VNPH 56
+end
+
+fn ehdr to void
+b4 0 1179403647
+b1 4 2
+b1 5 1
+b1 6 1
+e = ulong 0
+if eq get v VABI 8
+b1 7 65
+b1 8 8
+b4 20 1
+s = get v VSM
+e = or or 100663296 shl s 8 4
+if ge s 100
+e = or or 100663296 shl s 8 2
+end
+else
+b1 7 51
+b1 8 7
+b4 20 get v VAPI
+s = get v VSM
+e = or or shl s 16 1280 s
+end
+b2 16 2
+b2 18 190
+b8 32 get v VPHO
+b8 40 get v VSHO
+b4 48 e
+b2 52 64
+b2 54 56
+b2 56 get v VNPH
+b2 58 64
+b2 60 get v VNS
+b2 62 1
+end
+
+fn shdrs to void
+n = get v VNS
+for k ulong n
+if gt k 0
+p = add get v VSHO mul k 64
+b4 p get snm k
+b4 add p 4 get sty k
+b8 add p 8 get sfl k
+b8 add p 24 get sof k
+b8 add p 32 get ssz k
+b4 add p 40 get slk k
+b4 add p 44 get sin k
+b8 add p 48 get sal k
+b8 add p 56 get ses k
+end
+end
+end
+
+fn phdr k ulong ty ulong fl ulong of ulong fs ulong ms ulong to void
+p = add get v VPHO mul k 56
+b4 p ty
+b4 add p 4 fl
+b8 add p 8 of
+b8 add p 32 fs
+b8 add p 40 ms
+b8 add p 48 8
+end
+
+fn phdrs to void
+t = get v VPHO
+n = mul get v VNPH 56
+phdr 0 6 4 t n n
+phdr 1 1 4 t n n
+phdr 2 1 5 get sof 7 get ssz 7 get ssz 7
+k = ulong 3
+if eq get v VNEW 1
+phdr 3 1 6 get sof 11 0 get ssz 11
+k = 4
+end
+phdr k 1 4 get sof 8 get ssz 8 get ssz 8
+end
+
+fn emit to void
+t = ulong 0
+e = get v VEND
+while lt t e
+r = write 1 ob t sub e t
+if lt r 1
+exit 5
+end
+t = add t ulong r
+end
+end
+
+fn main to int
+if ne argcnt 7
+exit 1
+end
+args
+readin
+table
+build
+ehdr
+shdrs
+phdrs
+emit
+ret 0
+end

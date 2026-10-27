@@ -1,0 +1,5 @@
+{
+  "schema_version": "1.0.0",
+  "name": "omega-gpu-bench",
+  "purpose": "Bring-your-own-NVIDIA-GPU bench: Omega-encoded v7 cubins run through libcuda, checked word for word, receipts validated by CI, board on Pages"
+}

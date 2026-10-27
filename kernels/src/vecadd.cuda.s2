@@ -1,0 +1,86 @@
+; vecadd.cuda.s2 -- c[i] = a[i] + b[i] for sm_80: seed/sm80/vecadd.s2 with the CUDA ABI constant bank
+; instead of CUDA++'s (same instructions and schedule; only the constant offsets differ), so the kernel
+; can be loaded through NVIDIA's driver (cuModuleLoadData) as an interop oracle. Layout:
+; c[0x0][0x0] blockDim.x, 0x28 stack top, 0x160/0x168/0x170 a/b/c, 0x178 n (cubin signature pppu).
+; Referee: `nakref listing 80 <this> <out>` gives the same bytes as asm2 + sm80.tbl.
+; Each instruction is four lines; control line: c stall yield write-sb read-sb wait-mask reuse.
+ldc.0 7 1 255         ; LDC R1, c[0x0][0x28]
+cb.1 0x28 0
+ldc.2 4 0
+c 1 1 7 7 0 0
+s2r.0 7 9             ; S2R R9, SR_CTAID.X
+z.1
+s2r.2 0x25
+c 1 1 0 7 0 0
+uldc.0 7 4            ; ULDC UR4, c[0x0][0x0]
+cb.1 0x0 0
+uldc.2 4
+c 1 1 0 7 0 0
+s2r.0 7 0             ; S2R R0, SR_TID.X
+z.1
+s2r.2 0x21
+c 1 1 0 7 0 0
+uldc.0 7 5            ; ULDC UR5, c[0x0][0x178]
+cb.1 0x178 0
+uldc.2 4
+c 1 1 1 7 0 0
+imad.u.0 7 9 9        ; IMAD R9, R9, UR4, R0
+u.1 4
+imad.u.2 0 0
+c 5 0 7 7 1 0
+isetp.u.0 7 9         ; ISETP.GE.U32.AND P0, PT, R9, UR5, PT
+u.1 5
+isetp.u.2 7 0 0 0 6 0 7
+c 13 0 7 7 2 0
+exit.0 0              ; @P0 EXIT
+z.1
+exit.2
+c 5 1 7 7 0 0
+ldc.0 7 2 255         ; LDC.64 R2, c[0x0][0x160]
+cb.1 0x160 0
+ldc.2 5 0
+c 1 1 0 7 0 0
+ldc.0 7 4 255         ; LDC.64 R4, c[0x0][0x168]
+cb.1 0x168 0
+ldc.2 5 0
+c 8 1 2 7 0 0
+ldc.0 7 6 255         ; LDC.64 R6, c[0x0][0x170]
+cb.1 0x170 0
+ldc.2 5 0
+c 1 1 3 7 0 0
+imadw.i.0 7 2 9       ; IMAD.WIDE.U32 R2, R9, 0x4, R2
+n.1 4
+imad.2 2 0
+c 6 0 7 7 1 0
+ldg.0 7 2 2           ; LDG.E R2, [R2.64]
+ldg.1 63 0
+ldg.2 0 1 4 7 1 1
+c 1 1 4 7 0 0
+imadw.i.0 7 4 9       ; IMAD.WIDE.U32 R4, R9, 0x4, R4
+n.1 4
+imad.2 4 0
+c 6 0 7 7 4 0
+ldg.0 7 5 4           ; LDG.E R5, [R4.64]
+ldg.1 63 0
+ldg.2 0 1 4 7 1 1
+c 1 1 4 7 0 0
+imadw.i.0 7 6 9       ; IMAD.WIDE.U32 R6, R9, 0x4, R6
+n.1 4
+imad.2 6 0
+c 1 1 7 7 8 0
+iadd3.0 7 9 2         ; IADD3 R9, R2, R5, RZ
+r.1 5
+iadd3.2 255 7 7
+c 5 0 7 7 16 0
+stg.0 7 6             ; STG.E [R6.64], R9
+stg.1 9 0
+stg.2 63 1 4 7 1 1
+c 2 1 7 0 0 0
+exit.0 7              ; EXIT
+z.1
+exit.2
+c 5 1 7 7 1 0
+bra.0 7               ; BRA to itself: distance -1 instruction
+bra.1 0x0fffffff
+bra.2 -1 7
+c 0 0 7 7 0 0

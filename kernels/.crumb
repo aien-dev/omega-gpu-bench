@@ -1,0 +1,5 @@
+{
+  "schema_version": "1.0.0",
+  "name": "kernels",
+  "purpose": "six Omega-encoded v7 cubins (vecadd/neg for sm_80/86/89), their sources and the byte-for-byte rebuild"
+}

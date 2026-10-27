@@ -1,0 +1,5 @@
+{
+  "schema_version": "1.0.0",
+  "name": "kit",
+  "purpose": "interim Python kit: ./run drives bench.py, ck.py calls libcuda through ctypes"
+}

@@ -1,0 +1,5 @@
+{
+  "schema_version": "1.0.0",
+  "name": "tests",
+  "purpose": "no-GPU tests: fake libcuda fixture, tamper negative controls, committed tampered example"
+}
