@@ -24,7 +24,7 @@ if ls receipts/*.json > /dev/null 2>&1; then
   $V receipts/*.json > "$T/repo.txt"; expect "repository receipts validate" 0 $?
 fi
 
-# 2. a full kit run against the fixture driver (cc 8.9: 4 kernels)
+# 2. a full kit run against the fixture driver (cc 8.9 loads sm_80, sm_86 and sm_89 builds: 6 kernels)
 OGB_FAKE_DRIVER=$FAKE ./run --sign-off "$SIGN" --out "$T/ok" > "$T/ok.txt" 2>&1
 expect "fake run, all kernels correct" 0 $?
 K=$(ls "$T"/ok/*.json 2>/dev/null | head -n 1)
@@ -33,7 +33,7 @@ if [ -n "$K" ]; then
   $V "$K" > "$T/nofake.txt"; expect "fake receipt rejected without --allow-fake" 1 $?
   grep -q "test fixture driver" "$T/nofake.txt" && ok "reason: fixture driver" || bad "reason: fixture driver"
   n=$(python3 -c "import json,sys;print(len(json.load(open(sys.argv[1]))['results']))" "$K")
-  [ "$n" = 4 ] && ok "cc 8.9 ran 4 kernels" || bad "cc 8.9 ran $n kernels, want 4"
+  [ "$n" = 6 ] && ok "cc 8.9 ran 6 kernels" || bad "cc 8.9 ran $n kernels, want 6"
 else
   bad "fake run wrote no receipt"; cat "$T/ok.txt"
 fi

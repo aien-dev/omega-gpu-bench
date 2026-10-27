@@ -20,8 +20,8 @@ compiler, no `pip install`, no root. It takes under a minute and writes one JSON
 | Kit (`./run`, `kit/*.py`) | Interim Python glue that loads the cubins through ctypes, checks the output and writes the receipt. Its Omega successor is listed in [DEPENDENCIES.md](DEPENDENCIES.md). |
 | Receipts | Self-reported. CI checks everything it can from public inputs (below), but it cannot re-run your GPU. |
 
-The kit runs every kernel your card can load: an sm_89 card (RTX 40, L4, L40) runs the sm_89 and sm_80
-builds, an sm_86 card (RTX 30, A10, A40) runs sm_86 and sm_80, an sm_80 card (A100, A30) runs sm_80. Other
+The kit runs every kernel your card can load: an sm_89 card (RTX 40, L4, L40) runs the sm_89, sm_86 and
+sm_80 builds, an sm_86 card (RTX 30, A10, A40) runs sm_86 and sm_80, an sm_80 card (A100, A30) runs sm_80. Other
 architectures (Hopper, Blackwell, Turing and older) get a receipt that says `not_run`: this kit has no
 kernel for them yet.
 
