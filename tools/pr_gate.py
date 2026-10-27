@@ -3,12 +3,13 @@
 # base branch (workflow receipts.yml, pull_request_target) and treats the pull request as data only:
 # nothing from the pull request is executed.
 #
-#   pr_gate.py --pr PR_CHECKOUT --base BASE_SHA --head HEAD_SHA --assoc AUTHOR_ASSOCIATION
+#   pr_gate.py --pr PR_CHECKOUT --base BASE_SHA --head HEAD_SHA --same-repo yes|no
 #
 # Rules:
 #   * receipts are append-only: a pull request may add receipts/*.json, never change or delete one;
-#   * a contributor's pull request may change nothing but added receipts (maintainers, i.e. OWNER,
-#     MEMBER or COLLABORATOR, may also change the kit, imports.sha256 and evidence/);
+#   * a pull request from a fork may change nothing but added receipts; one from a branch of this
+#     repository (only people with write access can push those) may also change the kit,
+#     imports.sha256 and evidence/;
 #   * every added receipt passes tools/validate.py, using the base branch's validator, the base branch's
 #     kernels/SHA256SUMS, and the base branch's import allowlist (a maintainer's own list for theirs);
 #   * the commit that adds a kit-run receipt carries "Signed-off-by: <the receipt's signed_off_by>".
@@ -19,7 +20,6 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import validate as V  # noqa: E402
 
-MAINTAINER = {"OWNER", "MEMBER", "COLLABORATOR"}
 RECEIPT = re.compile(r"receipts/[^/]+\.json")
 
 
@@ -32,10 +32,10 @@ def main():
     ap.add_argument("--pr", required=True)
     ap.add_argument("--base", required=True)
     ap.add_argument("--head", required=True)
-    ap.add_argument("--assoc", required=True)
+    ap.add_argument("--same-repo", required=True, choices=("yes", "no"))
     o = ap.parse_args()
     trusted = os.path.dirname(HERE)
-    maint = o.assoc in MAINTAINER
+    maint = o.same_repo == "yes"
     errs = []
     added = []
     diff = git(o.pr, "diff", "--name-status", "--no-renames", "%s...%s" % (o.base, o.head))
@@ -69,7 +69,7 @@ def main():
                 ["git", "-C", o.pr, "merge-base", "--is-ancestor", commit, o.base],
                           capture_output=True).returncode != 0:
             errs.append("%s: kit.commit %s is not on the base branch" % (path, commit))
-    print("pull request adds %d receipt(s); author association %s" % (len(added), o.assoc))
+    print("pull request adds %d receipt(s); from %s" % (len(added), "a branch of this repository" if maint else "a fork"))
     for e in errs:
         print("REJECT " + e)
     if not added and not maint:
