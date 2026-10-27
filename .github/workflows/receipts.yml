@@ -25,8 +25,8 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha }}
           HEAD: ${{ github.event.pull_request.head.sha }}
-          ASSOC: ${{ github.event.pull_request.author_association }}
+          SAME: ${{ github.event.pull_request.head.repo.full_name == github.repository && 'yes' || 'no' }}
           REPO: ${{ github.repository }}
         run: |
           git -C pr fetch --quiet "https://github.com/$REPO" "$BASE"
-          python3 base/tools/pr_gate.py --pr pr --base "$BASE" --head "$HEAD" --assoc "$ASSOC"
+          python3 base/tools/pr_gate.py --pr pr --base "$BASE" --head "$HEAD" --same-repo "$SAME"

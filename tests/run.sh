@@ -78,7 +78,7 @@ OGB_FAKE_DRIVER=$FAKE "$T/clone/run" --sign-off "$SIGN" --out "$T/flip" > "$T/fl
 expect "byte-flipped cubin refused" 3 $?
 
 # 9. tampered receipts: every one must be rejected for the stated reason
-I=$(ls receipts/*.json 2>/dev/null | head -n 1)
+I=$(grep -l '"origin": "cloudkernels-import"' receipts/*.json 2>/dev/null | head -n 1)
 if [ -n "$K" ]; then
   python3 tests/tamper.py "$K" "${I:--}" "$T/tampered" > "$T/cases.tsv"
   while IFS="$(printf '\t')" read -r case reason; do
