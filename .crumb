@@ -15,8 +15,8 @@
           "purpose": "interim Python kit: ./run drives bench.py, ck.py calls libcuda through ctypes"
         },
         {
-          "digest": "fb41e566a45969356551f67f8f6d7a9c0b22f40ad3a0eebece50d679f4faaaca",
-          "last_commit": "400ded3",
+          "digest": "5d11a4c875499cea80c741613f900aea20063786ee895bc518f4e53972bf50e9",
+          "last_commit": "1168ea7",
           "name": "tests",
           "purpose": "no-GPU tests: fake libcuda fixture, tamper negative controls, committed tampered example"
         },
@@ -27,15 +27,15 @@
           "purpose": "receipt schema, validator, PR gate, board builder, one-off CloudKernels import"
         }
       ],
-      "children_root": "sha256:ee2b71bbb60850009fb3c2321b89b77ac17546ee0f62cc89cfe59ca39f80f129",
-      "compiled_at": "2026-10-27T00:24:36Z",
+      "children_root": "sha256:6ba18f8a47e4d64e75045b67c35802f05563d657171bea0a9e6483d3190d4a2c",
+      "compiled_at": "2026-10-27T00:26:13Z",
       "compiler": "crumb-compile/1",
-      "digest": "sha256:ce50dca2aec17aac95e6cd80f45b5790d6fdbc765e9a2cde491efef195533e91",
+      "digest": "sha256:7a5bb3bf304e9b27c65a94fe06445b3d33b55164816f465b857005d7eaf85e40",
       "evidence_files": 0,
       "evidence_root": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "files": 33,
-      "generated_at_commit": "400ded3e143a26fd8e495ff3f7c5214f9153a08f",
-      "source_tree": "sha256:39af4be3d0bfb5740725bc6147eafdfd7731021e343da0ce35d40a30817e1cec"
+      "generated_at_commit": "1168ea7a6b2949208414fb8128676024b347409c",
+      "source_tree": "sha256:914c4fcf155e6df6495f73cec264a008c8fd846c635aec8ef70ac6f618052adf"
     }
   },
   "name": "omega-gpu-bench",
