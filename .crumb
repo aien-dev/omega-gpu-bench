@@ -10,7 +10,7 @@
         },
         {
           "digest": "8e3ac951b50701b6f674f27c168b08a33f1f1f12332835afb81dbd79e97caa29",
-          "last_commit": "d6c2697",
+          "last_commit": "be6e65a",
           "name": "kit",
           "purpose": "interim Python kit: ./run drives bench.py, ck.py calls libcuda through ctypes"
         },
@@ -28,14 +28,14 @@
         }
       ],
       "children_root": "sha256:204922b59c04ee99d300738bdc821766a9756b39e068126cb77f9e5383963693",
-      "compiled_at": "2026-10-27T00:43:21Z",
+      "compiled_at": "2026-10-29T20:38:12Z",
       "compiler": "crumb-compile/1",
-      "digest": "sha256:c1f9f12171298d1c1af413484a1c3de558050958953e6aede3ca6c11539272ed",
+      "digest": "sha256:3ad29950e45e41ab3c4ec97271f48fd47e23e5badff9a9019293e6fc47172bf4",
       "evidence_files": 16,
       "evidence_root": "sha256:2ca05055761936745894bcf785980f7eab0a2c0edf5d40a7067d653b0e9f5d63",
       "files": 49,
-      "generated_at_commit": "d6c269716e53b64343f4973f1a98328d5dc289af",
-      "source_tree": "sha256:bb3c6d2485641dc558cff08aec8b7e5b7f3d853f867864a39746e69e01273bb6"
+      "generated_at_commit": "f35883450fd17f2030944c14b5741855d98524a4",
+      "source_tree": "sha256:4b6cc9a7cd77e3549ebfd7ecebdc5ba544b266ec50cc17a94846eb8f3307801a"
     }
   },
   "name": "omega-gpu-bench",

@@ -89,4 +89,4 @@ No GPU needed. Licensed under Apache-2.0 with the LLVM exception ([LICENSE](LICE
 
 ## Connected repos
 
-- [aien-dev/openaccel-lab](https://github.com/aien-dev/openaccel-lab): the cross-backend conformance and performance lab (OpenCL, Triton, HIP, CUDA, Omega) that imports this repository's receipts unchanged under `receipts/imported/`, pinned at `be6e65ac`.
+- [aien-dev/openaccel-lab](https://github.com/aien-dev/openaccel-lab): cross-backend lab (OpenCL, Triton, HIP, CUDA, Omega). Draft [pull request #1](https://github.com/aien-dev/openaccel-lab/pull/1) (`wip` at `e8c6e08a`) imports this repository's receipts unchanged under `receipts/imported/omega-gpu-bench`, from this repository at `be6e65ac`. That import is not on openaccel-lab `main`.
