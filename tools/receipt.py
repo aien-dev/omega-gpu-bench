@@ -8,6 +8,9 @@ REPO = "aien-dev/omega-gpu-bench"
 PATH_LABEL = ("NVIDIA libcuda (cuModuleLoadData + cuLaunchKernel): an interop oracle for Omega's "
               "machine-code encoder and cubin writer, not CUDA++'s own user-space driver path")
 STATEMENT = "I ran this kit as cloned on the machine described here and did not edit this receipt by hand."
+# Why kernels/ ships no cubin: the six v7 cubins and their writer were withdrawn. Their hashes stay in
+# kernels/WITHDRAWN.sha256 so the imported historical receipts still validate and nothing new can use them.
+WITHDRAWN = "removed pending clean-room rewrite (CudaLicenseRisk Q6)"
 N, SEED, NT = (1 << 20) + 7, 20261026, 1 << 26
 SIGNOFF = re.compile(r"[^<>\n]*[^<>\s][^<>\n]* <[^<>@\s]+@[^<>\s]+>")
 CUBIN = re.compile(r"(vecadd|neg)_sm(\d)(\d)_v7\.cubin")

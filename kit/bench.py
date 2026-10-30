@@ -54,12 +54,16 @@ def main():
 
     # 1. the kit itself
     sums = R.read_sums(os.path.join(KIT, "kernels", "SHA256SUMS"))
+    if not sums:
+        print("NOT_RUN on every GPU: this kit ships no kernel. The six v7 cubins were %s; "
+              "see README.md. No GPU was touched and no receipt written." % R.WITHDRAWN)
+        return 2
     for name, want in sums.items():
         got = R.sha256_file(os.path.join(KIT, "kernels", name))
         if got != want:
             print("REFUSED: kernels/%s does not match kernels/SHA256SUMS (got %s, want %s)."
                   % (name, got, want))
-            print("Run the kit as cloned; rebuild the kernels with kernels/src/build.sh if you changed them.")
+            print("Run the kit as cloned.")
             return 3
     commit = sh("git", "rev-parse", "HEAD") or None
     modified = bool(sh("git", "status", "--porcelain", "--", "run", "kit", "kernels", "tools"))
@@ -92,8 +96,7 @@ def main():
     want = R.expected_cubins(cc, sums)
     results, not_run = [], None
     if not want:
-        not_run = ("this kit has no kernel for sm_%s yet: only sm_80/86/89 v7 cubins have passed on "
-                   "hardware so far" % cc.replace(".", ""))
+        not_run = "this kit has no kernel for sm_%s yet" % cc.replace(".", "")
         print("NOT_RUN: " + not_run)
     for name in want:
         kind = name.split("_")[0]
