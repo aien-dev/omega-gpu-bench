@@ -97,3 +97,15 @@ sh tests/run.sh
 ```
 
 No GPU needed. Licensed under Apache-2.0 with the LLVM exception ([LICENSE](LICENSE), [NOTICE](NOTICE)).
+
+## Human-Directed Agentic Engineering
+
+I follow Human-Directed Agentic Engineering (HDAE) in development: I define goals,
+architecture, constraints, acceptance criteria, and stopping points; agents implement,
+execute checks, diagnose failures, and revise within those boundaries. I retain
+responsibility for reviewing claims, accepting changes, and release decisions.
+This development method does not turn a self-reported receipt into hardware qualification.
+
+For the documented method and a systems-software case study, see Gregory M. Kurtzer,
+[*Ginux: Building an Independent Kernel That Runs Linux Userspace through
+Human-Directed Agentic Engineering* (2026)](https://doi.org/10.5281/zenodo.23682548).
