@@ -98,6 +98,10 @@ sh tests/run.sh
 
 No GPU needed. Licensed under Apache-2.0 with the LLVM exception ([LICENSE](LICENSE), [NOTICE](NOTICE)).
 
+## Connected repos
+
+- [aien-dev/openaccel-lab](https://github.com/aien-dev/openaccel-lab): the cross-backend conformance and performance lab (OpenCL, Triton, HIP, CUDA, Omega) that imports this repository's receipts unchanged under `receipts/imported/`, pinned at `be6e65ac`.
+
 ## Human-Directed Agentic Engineering
 
 I follow Human-Directed Agentic Engineering (HDAE) in development: I define goals,
